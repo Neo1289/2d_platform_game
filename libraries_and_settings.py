@@ -13,6 +13,7 @@ from pytmx.util_pygame import load_pygame
 # ---------------------------
 WINDOW_WIDTH, WINDOW_HEIGHT = 1024 ,768
 display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+TILE_SIZE = 32
 
 # ---------------------------
 # maps
