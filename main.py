@@ -7,7 +7,7 @@ from libraries_and_settings import (display_surface, maps, TILE_SIZE)
 ###SPRITES
 from player import Player
 from camera import allSpritesOffset
-from sprites import GeneralSprite
+from sprites import GeneralSprite,AreaSprite
 
 pygame.init()
 
@@ -21,6 +21,7 @@ class Game:
         self.maps = maps
         self.current_map = None
         self.current_area = "world"
+        self.area_group = {}
 
         self.collision_sprites = pygame.sprite.Group()
         self.all_sprites = allSpritesOffset()
@@ -28,6 +29,10 @@ class Game:
         self.player = None
 
     def mapping(self):
+
+        self.all_sprites.empty()
+        self.collision_sprites.empty()
+        self.area_group.clear()
 
         for name, map in self.maps.items():
             if name == self.current_area:
@@ -51,6 +56,15 @@ class Game:
                     self.player.collision_rect.center = (obj.x, obj.y)
                     self.all_sprites.add(self.player)
 
+            if obj.name not in ('bat', 'scheleton', 'wall', 'flame', 'dragon'):
+                self.area_group[obj.name] = AreaSprite(obj.x, obj.y, obj.width, obj.height, self.all_sprites)
+
+    def transition(self):
+        for name, area in self.area_group.items():
+            if area.rect.colliderect(self.player.rect):
+                self.current_area = name
+            print(self.current_area)
+
     def run(self):
         while self.running:
             dt = self.clock.tick() / 1000
@@ -60,10 +74,11 @@ class Game:
                     sys.exit()
 
             self.display_surface.fill('black')
-
+            self.transition()
             self.all_sprites.update(dt)
             self.all_sprites.draw(self.player.rect.center)
             pygame.display.update()
+
         pygame.quit()
 
 if __name__ == '__main__':
