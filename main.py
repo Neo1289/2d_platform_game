@@ -23,7 +23,6 @@ class Game:
         self.current_area = "world"
         self.area_group = {}
         self.transition_bool = True
-        self.transition_bool = True
 
         self.collision_sprites = pygame.sprite.Group()
         self.all_sprites = allSpritesOffset()
