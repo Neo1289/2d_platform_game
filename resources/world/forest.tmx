@@ -262,7 +262,7 @@
   <object id="88" name="player_spawn" x="1134.67" y="1071">
    <point/>
   </object>
-  <object id="89" name="world_map" x="640" y="1232" width="144" height="148"/>
+  <object id="89" name="world" x="640" y="1232" width="144" height="148"/>
   <object id="91" name="maze" x="949" y="893" width="48" height="58">
    <ellipse/>
   </object>
