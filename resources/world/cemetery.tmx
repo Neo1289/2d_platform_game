@@ -156,7 +156,7 @@
   <object id="73" name="scheleton" x="1242" y="786">
    <point/>
   </object>
-  <object id="76" name="world_map" x="836" y="1120" width="112" height="94"/>
+  <object id="76" name="world" x="836" y="1120" width="112" height="94"/>
   <object id="79" name="flame" x="1032" y="725">
    <point/>
   </object>

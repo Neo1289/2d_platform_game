@@ -7,6 +7,7 @@ from os import path, walk, listdir
 from os.path import join
 import pymunk
 from pytmx.util_pygame import load_pygame
+pygame.init()
 
 # ---------------------------
 # Configuration Parameters
@@ -14,6 +15,7 @@ from pytmx.util_pygame import load_pygame
 WINDOW_WIDTH, WINDOW_HEIGHT = 1024 ,768
 display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 TILE_SIZE = 32
+font = pygame.font.Font(None, 20)
 
 # ---------------------------
 # maps
