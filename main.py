@@ -72,7 +72,7 @@ class Game:
                 self.current_area = name
                 self.text = f"You found a {name} press Y to enter"
                 self.text_surface = font.render(self.text,True,"white")
-                self.display_surface.blit(self.text_surface, (self.player.rect.centerx, self.player.rect.centery))
+                return
 
         ###perform the actual transition between areas
         if self.transition_bool:
@@ -93,6 +93,11 @@ class Game:
             self.display_surface.fill('black')
             self.all_sprites.update(dt)
             self.all_sprites.draw(self.player.rect.center)
+
+            if hasattr(self, 'text_surface'):
+                text_rect = self.text_surface.get_rect(center=(WINDOW_WIDTH // 2, WINDOW_HEIGHT // 2))
+                self.display_surface.blit(self.text_surface, text_rect)
+                
             pygame.display.update()
 
 
