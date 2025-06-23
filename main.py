@@ -3,6 +3,7 @@ from libraries_and_settings import (pygame,
                                     sys)
 ###CONFIGURATIONS
 from libraries_and_settings import (display_surface, maps, TILE_SIZE, WINDOW_HEIGHT,WINDOW_WIDTH,font)
+from words_library import phrases
 
 ###SPRITES
 from player import Player
@@ -23,6 +24,7 @@ class Game:
         self.current_area = "world"
         self.area_group = {}
         self.transition_bool = True
+        self.phrases = phrases
 
         self.collision_sprites = pygame.sprite.Group()
         self.all_sprites = allSpritesOffset()
@@ -63,43 +65,43 @@ class Game:
                     and event.type == pygame.KEYDOWN
                     and event.key == pygame.K_y):
                 self.transition_bool = True
+        ###perform the actual transition between areas
+        if self.transition_bool:
+            self.mapping()
+            self.transition_bool = False
 
-
-    def transition(self):
+    def rendering(self):
+        self.text_surface = None
         ###determine the current area map to be loaded and print it
         for name, area in self.area_group.items():
             if area.rect.colliderect(self.player.rect):
                 self.current_area = name
                 self.text = f"You found a {name} press Y to enter"
                 self.text_surface = font.render(self.text,True,"white")
-                return
 
-        ###perform the actual transition between areas
-        if self.transition_bool:
-            self.mapping()
-            self.transition_bool = False
+        for obj in self.collision_sprites:
+            if obj.rect.colliderect(self.player.rect) and hasattr(obj,"name") and obj.resources == 1:
+               self.text = f"{self.phrases["text_2"]}{obj.name}?"
+               self.text_surface = font.render(self.text, True, "white")
 
+        if self.text_surface:
+            text_rect = self.text_surface.get_rect(center=(WINDOW_WIDTH // 3, WINDOW_HEIGHT // 4))
+            self.display_surface.blit(self.text_surface, text_rect)
 
     def run(self):
         while self.running:
-            dt = self.clock.tick() / 1000
+            dt = self.clock.tick() / 100
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
                     sys.exit()
                 self.enter_area_check(event)
 
-            self.transition()
             self.display_surface.fill('black')
             self.all_sprites.update(dt)
             self.all_sprites.draw(self.player.rect.center)
-
-            if hasattr(self, 'text_surface'):
-                text_rect = self.text_surface.get_rect(center=(WINDOW_WIDTH // 2, WINDOW_HEIGHT // 2))
-                self.display_surface.blit(self.text_surface, text_rect)
-                
+            self.rendering()
             pygame.display.update()
-
 
         pygame.quit()
 
