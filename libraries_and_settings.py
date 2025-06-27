@@ -8,6 +8,7 @@ from os.path import join
 import pymunk
 from pytmx.util_pygame import load_pygame
 pygame.init()
+import random
 
 # ---------------------------
 # Configuration Parameters

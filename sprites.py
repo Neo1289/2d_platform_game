@@ -8,9 +8,11 @@ class GeneralSprite(pygame.sprite.Sprite):
          if ground_att: self.ground = True
          self.image = surf
          self.rect = self.image.get_rect(topleft = pos)
+         #determine the enemy attribute
          if name:
               if self.name in ('bat', 'scheleton', 'wall', 'flame', 'dragon'): self.enemy = True
-
+         if name:
+             if self.name in ('merchant'): self.human = True
 
 class AreaSprite(pygame.sprite.Sprite):
     def __init__(self, x, y, width,height,groups):
