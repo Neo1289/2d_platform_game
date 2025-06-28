@@ -36,10 +36,12 @@ class Game:
             'crystal ball': 1,
             'coin': 0,
             'keys': 0,
-            'holy water': 0
+            'holy water': 0,
+            'runes dust' : 0
         }
 
-        self.game_objects = ['potion','crystall ball','coin']
+        self.game_objects = ['potion','crystal ball','coin','runes dust']
+        self.weights = [0.4,0.1,0.49,0.01]
 
     def mapping(self):
 
@@ -101,18 +103,23 @@ class Game:
         for obj in self.collision_sprites:
             if self.object_id(obj):
                 if self.key_down(event, "y"):
-                    self.inventory[random.choice(self.game_objects)]+= 1
-
+                    if hasattr(obj,'rune'):
+                        self.inventory['runes dust']+= 1
+                        obj.kill()
+                    else:
+                        self.inventory[random.choices(self.game_objects,weights=self.weights,k=1)[0]]+= 1
                     obj.resources = 0
 
     def display_captions(self):
         time_sec = pygame.time.get_ticks() // 1000
-        self.caption = (f"\u2665 {self.player.life}      "
-                        f"\U0001F9EA {self.inventory['potion']}      "
+        self.caption = (f"\u2665 {self.player.life}     "
+                        f"\U0001F9EA {self.inventory['potion']}     "
                         f"\U0001F52E {self.inventory['crystal ball']}     "
-                        f"\U0001F4B0 {self.inventory['coin']}       "
-                        f"\U0001F5DD {self.inventory['keys']}       "
-                        f"\u2697\ufe0f {self.inventory['holy water']}      "
+                        f"\U0001F4B0 {self.inventory['coin']}     "
+                        f"\U0001F5DD {self.inventory['keys']}     "
+                        f"\u2697\ufe0f {self.inventory['holy water']}     "
+                        f"\U0001F4AB {self.inventory['runes dust']}     "
+                        f"timer: {time_sec}     "
                         )
         pygame.display.set_caption(self.caption)
 
@@ -120,13 +127,12 @@ class Game:
     ####REDUNDANT CODE REDUCTION####
     ################################
     def object_id(self,obj):
-        if obj.rect.colliderect(self.player.rect) and hasattr(obj, "name") and not hasattr(obj,
-                                                                                           "human") and obj.resources == 1:
+        if obj.rect.colliderect(self.player.rect) and hasattr(obj, "name") and hasattr(obj,
+                                                                                           "item") and obj.resources == 1:
             return True
 
     def key_down(self, event, key: str):
-        if event.type == pygame.KEYDOWN and  getattr(pygame, f"K_{key}"):
-            return True
+        return event.type == pygame.KEYDOWN and event.key == getattr(pygame, f"K_{key}")
 
     def run(self):
         while self.running:
