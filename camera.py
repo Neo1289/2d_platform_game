@@ -18,3 +18,5 @@ class allSpritesOffset(pygame.sprite.Group):
         for layer in [ground_sprites, obj_sprites]:
             for sprite in sorted(layer, key = lambda sprite : sprite.rect.centery):
                 self.display_surface.blit(sprite.image, sprite.rect.topleft + self.offset)
+
+
