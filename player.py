@@ -3,9 +3,9 @@ from libraries_and_settings import pygame, walk, path, join
 
 class Player(pygame.sprite.Sprite):
     # Class constants
-    SPEED = 20
+    SPEED = 200
     COLLISION_SHRINK = 30
-    ANIMATION_SPEED = 1
+    ANIMATION_SPEED = 10
     INITIAL_LIFE = 100
 
     # Direction mappings for cleaner code
@@ -55,6 +55,10 @@ class Player(pygame.sprite.Sprite):
     def _get_input(self):
         """Handle player input and update direction vector"""
         keys = pygame.key.get_pressed()
+
+        # Reset direction vector
+        self.direction.x = 0
+        self.direction.y = 0
 
         # Calculate direction using boolean arithmetic
         self.direction.x = int(keys[pygame.K_RIGHT]) - int(keys[pygame.K_LEFT])

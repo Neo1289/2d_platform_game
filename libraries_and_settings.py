@@ -26,3 +26,86 @@ for dirpath, dirnames, filenames in walk(path.join('resources', 'world')):
     for filename in filenames:
         if filename.lower().endswith('.tmx'):
             maps[(filename.split('.')[0])] = (load_pygame(path.join('resources','world',filename)))
+
+# ---------------------------
+# bats images
+# ---------------------------
+
+bat = []
+bat_folder = path.join('resources', 'bat')
+for file_name in listdir(bat_folder):
+    full_path = path.join(bat_folder, file_name)
+    surf = pygame.image.load(full_path).convert_alpha()
+    bat.append(surf)
+
+# ---------------------------
+# scheletons images
+# ---------------------------
+
+scheleton = []
+scheleton_folder = path.join('resources', 'skeleton')
+for file_name in listdir(scheleton_folder):
+    full_path = path.join(scheleton_folder, file_name)
+    surf = pygame.image.load(full_path).convert_alpha()
+    scheleton.append(surf)
+
+# ---------------------------
+# flames images
+# ---------------------------
+
+flame = []
+flame_folder = path.join('resources', 'torch')
+for file_name in listdir(flame_folder):
+    full_path = path.join(flame_folder, file_name)
+    surf = pygame.image.load(full_path).convert()
+    surf.set_colorkey((10,5,46))
+    flame.append(surf)
+# ---------------------------
+# ice images
+# ---------------------------
+
+ice = []
+ice_folder = path.join('resources', 'ice_attack')
+for file_name in listdir(ice_folder):
+    full_path = path.join(ice_folder, file_name)
+    surf = pygame.image.load(full_path).convert()
+    surf.set_colorkey("black")
+    ice.append(surf)
+
+# ---------------------------
+# dragon images
+# ---------------------------
+
+dragon = []
+dragon_folder = path.join('resources', 'dragon','left')
+for file_name in listdir(dragon_folder):
+    full_path = path.join(dragon_folder, file_name)
+    surf = pygame.image.load(full_path).convert_alpha()
+    dragon.append(surf)
+
+
+# ---------------------------
+# enemies dictionary images
+# ---------------------------
+
+enemies_images = {"dragon":dragon,"bat":bat,"scheleton":scheleton,"flame":flame,"ice":ice}
+enemies_speed = {"dragon":100,"bat":150,"scheleton":30,"flame":70,"ice":65}
+
+# ---------------------------
+# player flame images
+# ---------------------------
+
+player_flame_frames = []
+player_flame_folder = path.join('resources', 'player_flame')
+for file_name in listdir(player_flame_folder):
+    full_path = path.join(player_flame_folder, file_name)
+    surf = pygame.image.load(full_path).convert()
+    surf.set_colorkey((31, 16, 42))
+    player_flame_frames.append(surf)
+
+# ---------------------------
+# bonus game images
+# ---------------------------
+
+chest = pygame.image.load(path.join('resources','world','chest.png')).convert_alpha()
+wall =  pygame.image.load(path.join('resources','world','wall_two.png')).convert_alpha()

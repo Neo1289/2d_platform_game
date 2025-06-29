@@ -3,13 +3,13 @@ from libraries_and_settings import (pygame,
                                     sys,
                                     random)
 ###CONFIGURATIONS
-from libraries_and_settings import (display_surface, maps, TILE_SIZE, WINDOW_HEIGHT,WINDOW_WIDTH,font)
+from libraries_and_settings import (display_surface, maps, TILE_SIZE, WINDOW_HEIGHT,WINDOW_WIDTH,font,enemies_images,enemies_speed)
 from words_library import phrases
 
 ###SPRITES
 from player import Player
 from camera import allSpritesOffset
-from sprites import GeneralSprite,AreaSprite
+from sprites import GeneralSprite,AreaSprite,NPC
 
 pygame.init()
 
@@ -26,6 +26,7 @@ class Game:
         self.area_group = {}
         self.transition_bool = True
         self.phrases = phrases
+        self.enemies_images = enemies_images
 
         self.collision_sprites = pygame.sprite.Group()
         self.all_sprites = allSpritesOffset()
@@ -68,8 +69,10 @@ class Game:
                     self.player.collision_rect.center = (obj.x, obj.y)
                     self.all_sprites.add(self.player)
 
-            if obj.name not in ('bat', 'scheleton', 'wall', 'flame', 'dragon'):
+            elif obj.name not in ('bat', 'scheleton', 'wall', 'flame', 'dragon'):
                 self.area_group[obj.name] = AreaSprite(obj.x, obj.y, obj.width, obj.height, self.all_sprites)
+            else:
+                self.monster = NPC((obj.x,obj.y),self.enemies_images[obj.name],self.all_sprites,obj.name,enemies_speed[obj.name],True)
 
     def enter_area_check(self,event):
         for name, area in self.area_group.items():
@@ -114,6 +117,11 @@ class Game:
                         self.last_item = choice
                     obj.resources = 0
 
+    def collision_detection(self):
+        for obj in self.all_sprites:
+            if obj.rect.colliderect(self.player.rect):
+                if hasattr(obj, "dangerous"): self.player.life -= 1
+
     def display_captions(self):
         time_sec = pygame.time.get_ticks() // 1000
         self.caption = (f"\u2665 {self.player.life}     "
@@ -141,7 +149,7 @@ class Game:
 
     def run(self):
         while self.running:
-            dt = self.clock.tick() / 100
+            dt = self.clock.tick(60) / 1000
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
@@ -154,6 +162,7 @@ class Game:
             self.all_sprites.draw(self.player.rect.center)
             self.rendering()
             self.display_captions()
+            self.collision_detection()
             pygame.display.update()
 
         pygame.quit()
