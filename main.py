@@ -42,6 +42,7 @@ class Game:
 
         self.game_objects = ['potion','crystal ball','coin','runes dust']
         self.weights = [0.4,0.1,0.49,0.01]
+        self.last_item = ''
 
     def mapping(self):
 
@@ -106,8 +107,11 @@ class Game:
                     if hasattr(obj,'rune'):
                         self.inventory['runes dust']+= 1
                         obj.kill()
+                        self.last_item = 'runes dust'
                     else:
-                        self.inventory[random.choices(self.game_objects,weights=self.weights,k=1)[0]]+= 1
+                        choice = random.choices(self.game_objects,weights=self.weights,k=1)[0]
+                        self.inventory[choice]+= 1
+                        self.last_item = choice
                     obj.resources = 0
 
     def display_captions(self):
@@ -119,7 +123,8 @@ class Game:
                         f"\U0001F5DD {self.inventory['keys']}     "
                         f"\u2697\ufe0f {self.inventory['holy water']}     "
                         f"\U0001F4AB {self.inventory['runes dust']}     "
-                        f"timer: {time_sec}     "
+                        f"timer: {time_sec}          "
+                        f"last item found: {self.last_item}     "
                         )
         pygame.display.set_caption(self.caption)
 
