@@ -44,11 +44,9 @@ class NPC(pygame.sprite.Sprite):
         self.image = self.frames[int(self.frames_index) % len(self.frames)]
 
     def move(self, dt):
-        if self.name != 'flame':
-            self.pos += self.direction * self.speed * dt
-            self.rect.center = self.pos
-        else:
-            pass
+        self.pos += self.direction * self.speed * dt
+        self.rect.center = self.pos
+
 
     def update(self, dt):
         self.animate(dt)
