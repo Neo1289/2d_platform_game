@@ -89,7 +89,7 @@ for file_name in listdir(dragon_folder):
 # ---------------------------
 
 enemies_images = {"dragon":dragon,"bat":bat,"scheleton":scheleton,"flame":flame,"ice":ice}
-enemies_speed = {"dragon":100,"bat":150,"scheleton":30,"flame":70,"ice":65}
+enemies_speed = {"dragon":100,"bat":150,"scheleton":30,"flame":0,"ice":65}
 
 # ---------------------------
 # player flame images
