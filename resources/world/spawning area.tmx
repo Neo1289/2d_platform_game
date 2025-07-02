@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="60" height="60" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="99">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="60" height="60" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="102">
  <tileset firstgid="1" source="house_ground.tsx"/>
  <tileset firstgid="65" source="objects_world.tsx"/>
  <layer id="1" name="ground" width="60" height="60">
@@ -88,153 +88,6 @@
   <object id="97" gid="66" x="948.5" y="756.5" width="32" height="58"/>
  </objectgroup>
  <objectgroup id="3" name="areas">
-  <object id="19" name="spawning bonus" x="705.5" y="726">
-   <point/>
-  </object>
-  <object id="20" name="spawning bonus" x="754.5" y="737.5">
-   <point/>
-  </object>
-  <object id="21" name="spawning bonus" x="816.5" y="738.5">
-   <point/>
-  </object>
-  <object id="22" name="spawning bonus" x="881" y="732.5">
-   <point/>
-  </object>
-  <object id="24" name="spawning bonus" x="922.5" y="737.5">
-   <point/>
-  </object>
-  <object id="25" name="spawning bonus" x="943.5" y="774">
-   <point/>
-  </object>
-  <object id="26" name="spawning bonus" x="879.5" y="785">
-   <point/>
-  </object>
-  <object id="27" name="spawning bonus" x="940.5" y="829.5">
-   <point/>
-  </object>
-  <object id="28" name="spawning bonus" x="841.5" y="815.5">
-   <point/>
-  </object>
-  <object id="29" name="spawning bonus" x="888" y="806.5">
-   <point/>
-  </object>
-  <object id="30" name="spawning bonus" x="782" y="777">
-   <point/>
-  </object>
-  <object id="31" name="spawning bonus" x="736.5" y="819">
-   <point/>
-  </object>
-  <object id="32" name="spawning bonus" x="716" y="777">
-   <point/>
-  </object>
-  <object id="33" name="spawning bonus" x="797" y="821">
-   <point/>
-  </object>
-  <object id="34" name="spawning bonus" x="718.5" y="932.5">
-   <point/>
-  </object>
-  <object id="35" name="spawning bonus" x="731" y="868.5">
-   <point/>
-  </object>
-  <object id="36" name="spawning bonus" x="757" y="880.5">
-   <point/>
-  </object>
-  <object id="37" name="spawning bonus" x="791" y="915.5">
-   <point/>
-  </object>
-  <object id="38" name="spawning bonus" x="851" y="864.5">
-   <point/>
-  </object>
-  <object id="39" name="spawning bonus" x="778.5" y="854">
-   <point/>
-  </object>
-  <object id="40" name="spawning bonus" x="926" y="901.5">
-   <point/>
-  </object>
-  <object id="41" name="spawning bonus" x="888.5" y="849.5">
-   <point/>
-  </object>
-  <object id="42" name="spawning bonus" x="876.5" y="891">
-   <point/>
-  </object>
-  <object id="43" name="spawning bonus" x="814" y="914">
-   <point/>
-  </object>
-  <object id="44" name="spawning bonus" x="879" y="968">
-   <point/>
-  </object>
-  <object id="45" name="spawning bonus" x="936.5" y="960.5">
-   <point/>
-  </object>
-  <object id="46" name="spawning bonus" x="872.5" y="927">
-   <point/>
-  </object>
-  <object id="47" name="spawning bonus" x="776" y="970">
-   <point/>
-  </object>
-  <object id="48" name="spawning bonus" x="697.5" y="978">
-   <point/>
-  </object>
-  <object id="49" name="spawning bonus" x="747.5" y="926.5">
-   <point/>
-  </object>
-  <object id="50" name="spawning bonus" x="821.5" y="943">
-   <point/>
-  </object>
-  <object id="51" name="spawning bonus" x="842.5" y="967">
-   <point/>
-  </object>
-  <object id="52" name="spawning bonus" x="916" y="988.5">
-   <point/>
-  </object>
-  <object id="53" name="spawning bonus" x="903.5" y="924">
-   <point/>
-  </object>
-  <object id="54" name="spawning bonus" x="936" y="849">
-   <point/>
-  </object>
-  <object id="55" name="spawning bonus" x="899.5" y="804">
-   <point/>
-  </object>
-  <object id="56" name="spawning bonus" x="908.5" y="768.5">
-   <point/>
-  </object>
-  <object id="57" name="spawning bonus" x="783" y="768">
-   <point/>
-  </object>
-  <object id="58" name="spawning bonus" x="809" y="770.5">
-   <point/>
-  </object>
-  <object id="59" name="spawning bonus" x="767.5" y="802">
-   <point/>
-  </object>
-  <object id="60" name="spawning bonus" x="710" y="873">
-   <point/>
-  </object>
-  <object id="61" name="spawning bonus" x="765" y="928.5">
-   <point/>
-  </object>
-  <object id="62" name="spawning bonus" x="746.5" y="978.5">
-   <point/>
-  </object>
-  <object id="63" name="spawning bonus" x="836.5" y="981">
-   <point/>
-  </object>
-  <object id="64" name="spawning bonus" x="952" y="908.5">
-   <point/>
-  </object>
-  <object id="65" name="spawning bonus" x="939" y="876">
-   <point/>
-  </object>
-  <object id="66" name="spawning bonus" x="902" y="865">
-   <point/>
-  </object>
-  <object id="67" name="spawning bonus" x="923" y="785">
-   <point/>
-  </object>
-  <object id="68" name="player_spawn" x="819.5" y="856.5">
-   <point/>
-  </object>
   <object id="71" name="house" x="822" y="974" width="52" height="51"/>
   <object id="72" name="bat" x="1037" y="677.5">
    <point/>
@@ -309,5 +162,8 @@
    <point/>
   </object>
   <object id="98" name="secret passage" x="936.5" y="706.5" width="48.5" height="48.5"/>
+  <object id="99" name="player_spawn" x="825" y="838">
+   <point/>
+  </object>
  </objectgroup>
 </map>

@@ -3,7 +3,8 @@ from libraries_and_settings import (pygame,
                                     sys,
                                     random)
 ###CONFIGURATIONS
-from libraries_and_settings import (display_surface, maps, TILE_SIZE, WINDOW_HEIGHT,WINDOW_WIDTH,font,enemies_images,enemies_speed)
+from libraries_and_settings import (display_surface, maps, TILE_SIZE, WINDOW_HEIGHT,WINDOW_WIDTH,
+                                    font,enemies_images,enemies_speed,enemies_direction)
 from words_library import phrases
 
 ###SPRITES
@@ -27,6 +28,7 @@ class Game:
         self.transition_bool = True
         self.phrases = phrases
         self.enemies_images = enemies_images
+        self.enemies_direction = enemies_direction
 
         self.collision_sprites = pygame.sprite.Group()
         self.all_sprites = allSpritesOffset()
@@ -38,11 +40,12 @@ class Game:
             'coin': 0,
             'keys': 0,
             'holy water': 0,
-            'runes dust' : 0
+            'runes dust' : 0,
+            'nothing useful' : 0
         }
 
-        self.game_objects = ['potion','crystal ball','coin','runes dust']
-        self.weights = [0.4,0.1,0.49,0.01]
+        self.game_objects = ['potion','crystal ball','coin','runes dust','nothing useful']
+        self.weights = [0.4,0.1,0.49,0.01,1]
         self.last_item = ''
 
     def mapping(self):
@@ -59,7 +62,7 @@ class Game:
             GeneralSprite((x * TILE_SIZE, y * TILE_SIZE), image, self.all_sprites,True)
         ###objects
         for obj in self.current_map.get_layer_by_name('objects'):
-            GeneralSprite((obj.x, obj.y), obj.image, (self.all_sprites,self.collision_sprites),None,obj.name,1)
+            GeneralSprite((obj.x, obj.y), obj.image, (self.all_sprites,self.collision_sprites),None,obj.name,1,item= True)
         ###player
         for obj in self.current_map.get_layer_by_name('areas'):
             if obj.name == 'player_spawn':
@@ -69,10 +72,11 @@ class Game:
                     self.player.collision_rect.center = (obj.x, obj.y)
                     self.all_sprites.add(self.player)
 
-            elif obj.name not in ('bat', 'scheleton', 'wall', 'flame', 'dragon'):
+            elif obj.name not in ('bat', 'scheleton', 'wall', 'flame', 'dragon','ice'):
                 self.area_group[obj.name] = AreaSprite(obj.x, obj.y, obj.width, obj.height, self.all_sprites)
             else:
-                self.monster = NPC((obj.x,obj.y),self.enemies_images[obj.name],self.all_sprites,obj.name,enemies_speed[obj.name],True)
+                self.monster = NPC((obj.x,obj.y),self.enemies_images[obj.name],self.all_sprites,obj.name,enemies_speed[obj.name],True,self.enemies_direction[obj.name],follow_player=obj.name in ['scheleton'])
+                self.monster.player = self.player
 
     def enter_area_check(self,event):
         for name, area in self.area_group.items():
@@ -141,7 +145,8 @@ class Game:
     ################################
     def object_id(self,obj):
         if obj.rect.colliderect(self.player.rect) and hasattr(obj, "name") and hasattr(obj,
-                                                                                           "item") and obj.resources == 1:
+                                                                                           "item") and not hasattr(obj,
+                                                                                           "human")  and obj.resources == 1:
             return True
 
     def key_down(self, event, key: str):
