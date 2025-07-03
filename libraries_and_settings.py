@@ -103,10 +103,3 @@ for file_name in listdir(player_flame_folder):
     surf = pygame.image.load(full_path).convert()
     surf.set_colorkey((31, 16, 42))
     player_flame_frames.append(surf)
-
-# ---------------------------
-# bonus game images
-# ---------------------------
-
-chest = pygame.image.load(path.join('resources','world','chest.png')).convert_alpha()
-wall =  pygame.image.load(path.join('resources','world','wall_two.png')).convert_alpha()
