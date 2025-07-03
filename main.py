@@ -119,7 +119,7 @@ class Game:
                         choice = random.choices(self.game_objects,weights=self.weights,k=1)[0]
                         self.inventory[choice]+= 1
                         self.last_item = choice
-                    obj.resources = 0
+                    obj.resources -= 1
 
     def collision_detection(self):
         for obj in self.all_sprites:
@@ -146,7 +146,7 @@ class Game:
     def object_id(self,obj):
         if obj.rect.colliderect(self.player.rect) and hasattr(obj, "name") and hasattr(obj,
                                                                                            "item") and not hasattr(obj,
-                                                                                           "human")  and obj.resources == 1:
+                                                                                           "human")  and obj.resources > 0:
             return True
 
     def key_down(self, event, key: str):

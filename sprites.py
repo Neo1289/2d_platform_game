@@ -4,7 +4,7 @@ class GeneralSprite(pygame.sprite.Sprite):
     def __init__(self, pos, surf, groups, ground_att: bool, name: str= None, resources: int= 0, item: bool= None):
          super().__init__(groups)
 
-         self.resources = resources
+         self.resources = 10 if name == 'spawning chest' else resources
          if ground_att: self.ground = True
          self.image = surf
          self.rect = self.image.get_rect(topleft = pos)
@@ -14,6 +14,23 @@ class GeneralSprite(pygame.sprite.Sprite):
               self.name = name
               if self.name in ('merchant'): self.human = True
               if self.name == 'runes' : self.rune = True
+         if name:
+              if self.name == 'spawning chest':
+                    self.temp = True
+                    self.spawn_timer = 0
+                    self.spawn_cooldown = 3
+
+    def update(self,dt):
+        try:
+            if self.temp:
+                self.spawn_timer += dt
+                if self.spawn_timer >= self.spawn_cooldown:
+                    new_x = random.randint(660, 880)
+                    new_y = random.randint(700, 1000)
+                    self.rect.center = (new_x, new_y)
+                    self.spawn_timer = 0
+        except:
+            pass
 
 #######################
 class AreaSprite(pygame.sprite.Sprite):
