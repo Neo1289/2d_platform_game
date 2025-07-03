@@ -16,12 +16,13 @@ class GeneralSprite(pygame.sprite.Sprite):
               if self.name == 'runes' : self.rune = True
          if name:
               if self.name == 'spawning chest':
+                    self.temp = True
                     self.spawn_timer = 0
                     self.spawn_cooldown = 3
 
     def update(self,dt):
         try:
-            if self.name == 'spawning chest':
+            if self.temp:
                 self.spawn_timer += dt
                 if self.spawn_timer >= self.spawn_cooldown:
                     new_x = random.randint(660, 880)

@@ -32,7 +32,6 @@ class Game:
 
         self.collision_sprites = pygame.sprite.Group()
         self.all_sprites = allSpritesOffset()
-        self.temp_sprites = pygame.sprite.Group()
         self.player = None
 
         self.inventory = {
