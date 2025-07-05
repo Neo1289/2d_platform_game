@@ -34,10 +34,11 @@ class GeneralSprite(pygame.sprite.Sprite):
 
 #######################
 class AreaSprite(pygame.sprite.Sprite):
-    def __init__(self, x, y, width,height,groups):
+    def __init__(self, x, y, width,height,groups,name=None):
         super().__init__(groups)
         self.image = pygame.Surface((width, height), pygame.SRCALPHA)
         self.rect = pygame.Rect(x, y, width, height)
+        if name == 'danger area': self.dangerous = True
 
 #######################
 class NPC(pygame.sprite.Sprite):

@@ -48,6 +48,9 @@ class Game:
         self.weights = [0.4,0.1,0.49,0.01,1]
         self.last_item = ''
 
+        self.custom_event = pygame.event.custom_type()
+        pygame.time.set_timer(self.custom_event, 5000)
+
     def mapping(self):
 
         self.all_sprites.empty()
@@ -73,9 +76,9 @@ class Game:
                     self.all_sprites.add(self.player)
 
             elif obj.name not in ('bat', 'scheleton', 'wall', 'flame', 'dragon','ice'):
-                self.area_group[obj.name] = AreaSprite(obj.x, obj.y, obj.width, obj.height, self.all_sprites)
+                self.area_group[obj.name] = AreaSprite(obj.x, obj.y, obj.width, obj.height, self.all_sprites,obj.name)
             else:
-                self.monster = NPC((obj.x,obj.y),self.enemies_images[obj.name],self.all_sprites,obj.name,enemies_speed[obj.name],True,self.enemies_direction[obj.name],follow_player=obj.name in ['scheleton'])
+                self.monster = NPC((obj.x,obj.y),self.enemies_images[obj.name],self.all_sprites,obj.name,enemies_speed[obj.name],True,self.enemies_direction[obj.name],follow_player=obj.name in ['scheleton','dragon'])
                 self.monster.player = self.player
 
     def enter_area_check(self,event):
@@ -83,7 +86,6 @@ class Game:
         ###check if the player pressed yes key to enter the area
             if area.rect.colliderect(self.player.rect) and self.key_down(event,"y"):
                 self.transition_bool = True
-
         ###perform the actual transition between areas
         if self.transition_bool:
             self.mapping()
@@ -93,7 +95,7 @@ class Game:
         self.text_surface = None
         ###determine the current area map to be loaded and print it
         for name, area in self.area_group.items():
-            if area.rect.colliderect(self.player.rect):
+            if area.rect.colliderect(self.player.rect) and name != 'danger area':
                 self.current_area = name
                 self.text = f"You found a {name} press Y to enter"
                 self.text_surface = font.render(self.text,True,"white")
@@ -161,6 +163,8 @@ class Game:
                     sys.exit()
                 self.enter_area_check(event)
                 self.collect_resources(event)
+                if event.type == self.custom_event:
+                    print('ok')
 
             self.display_surface.fill('black')
             self.all_sprites.update(dt)

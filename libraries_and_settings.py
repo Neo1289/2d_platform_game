@@ -83,13 +83,12 @@ for file_name in listdir(dragon_folder):
     surf = pygame.image.load(full_path).convert_alpha()
     dragon.append(surf)
 
-
 # ---------------------------
 # enemies dictionary images
 # ---------------------------
 
 enemies_images = {"dragon":dragon,"bat":bat,"scheleton":scheleton,"flame":flame,"ice":ice}
-enemies_speed = {"dragon":100,"bat":80,"scheleton":30,"flame":0,"ice":100}
+enemies_speed = {"dragon":110,"bat":80,"scheleton":30,"flame":0,"ice":100,"danger area":0}
 enemies_direction = {"dragon": [-1,1] ,"bat":[-1,1] ,"scheleton":[-1,1] ,"flame":[-1,1],"ice":[-1,1]}
 
 # ---------------------------
