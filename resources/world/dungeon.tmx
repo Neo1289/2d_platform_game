@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="218">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="239">
  <tileset firstgid="1" source="objects_world.tsx"/>
  <tileset firstgid="30" source="icy_ground.tsx"/>
  <tileset firstgid="534" source="house_ground.tsx"/>
@@ -20,8 +20,8 @@
 537,538,567,567,541,562,563,564,565,557,540,541,564,565,567,567,540,541,564,565,539,540,567,563,564,565,537,538,539,540,
 536,537,567,539,540,541,562,563,564,565,540,541,564,565,567,539,540,541,564,565,539,540,567,563,564,565,538,539,540,541,
 536,537,567,539,540,541,562,563,564,565,540,541,565,538,567,540,541,549,564,565,539,540,567,563,564,565,538,539,540,541,
-536,537,567,567,567,567,562,563,564,565,541,541,565,538,567,540,541,557,564,565,539,540,567,563,564,565,538,539,540,541,
-536,537,538,539,540,567,562,563,564,565,549,541,565,538,567,567,567,567,567,567,567,567,567,563,564,565,538,539,540,541,
+536,537,567,567,567,567,562,563,564,565,541,541,565,538,567,540,541,557,564,565,539,540,567,563,564,569,538,539,540,541,
+536,537,538,539,540,567,562,563,564,565,549,541,565,538,569,567,567,567,567,567,567,567,567,563,564,565,538,539,540,541,
 536,537,538,539,540,567,567,567,567,567,567,567,567,567,567,540,541,563,564,565,549,540,567,563,564,565,538,539,540,541,
 536,537,538,539,540,541,561,562,563,564,565,549,565,538,539,540,541,563,564,565,557,540,567,563,564,565,538,539,540,541,
 536,537,538,539,540,541,561,562,563,564,565,557,565,539,540,541,549,562,563,564,565,540,567,563,564,565,538,539,540,541,
@@ -38,44 +38,25 @@
 </data>
  </layer>
  <objectgroup id="3" name="areas">
-  <object id="194" name="safe" x="571" y="677" width="36" height="233"/>
-  <object id="195" name="safe" x="100" y="673" width="467" height="27.6667"/>
-  <object id="196" name="safe" x="98" y="676" width="28" height="124"/>
-  <object id="197" name="safe" x="575.333" y="672.667" width="349.333" height="26.6667"/>
-  <object id="198" name="safe" x="706" y="128" width="27.3333" height="534.667"/>
-  <object id="199" name="safe" x="703.333" y="129.333" width="96.6667" height="25.3333"/>
-  <object id="200" name="safe" x="774" y="164" width="88.6667" height="24"/>
-  <object id="201" name="safe" x="450.667" y="511.333" width="250.667" height="30"/>
-  <object id="202" name="safe" x="162" y="546" width="318" height="27.3333"/>
-  <object id="203" name="safe" x="161.333" y="478.667" width="31.3333" height="83.3333"/>
-  <object id="204" name="safe" x="65.3333" y="480" width="118.667" height="29.3333"/>
-  <object id="205" name="safe" x="65.3333" y="385.333" width="28" height="98.6667"/>
-  <object id="206" name="safe" x="96" y="222.667" width="28" height="194"/>
-  <object id="207" name="safe" x="130" y="94.6667" width="26" height="158"/>
-  <object id="208" name="safe" x="448.667" y="386.667" width="26" height="136"/>
-  <object id="209" name="safe" x="480" y="64.6667" width="29.3333" height="338"/>
-  <object id="210" name="safe" x="321.333" y="159.333" width="154.667" height="32"/>
   <object id="211" name="player_spawn" x="590.667" y="874">
    <point/>
   </object>
   <object id="212" name="dragon" x="-159.333" y="309.333">
    <point/>
   </object>
-  <object id="213" name="dragon" x="-363.333" y="136.667">
-   <point/>
-  </object>
-  <object id="214" name="dragon" x="-366.667" y="525.333">
-   <point/>
-  </object>
-  <object id="215" name="dragon" x="-355.333" y="48.6667">
-   <point/>
-  </object>
-  <object id="216" name="dragon" x="-370.667" y="414.667">
-   <point/>
-  </object>
-  <object id="217" name="dragon" x="-372.667" y="672.667">
-   <point/>
-  </object>
+  <object id="219" name="danger area" x="609.8" y="704.537" width="321.234" height="219.964"/>
+  <object id="227" name="danger area" x="128.494" y="708.893" width="448.639" height="221.053"/>
+  <object id="228" name="danger area" x="37.0236" y="674.047" width="56.6243" height="252.632"/>
+  <object id="229" name="danger area" x="37.0236" y="568.421" width="667.514" height="107.804"/>
+  <object id="230" name="danger area" x="35.9347" y="507.441" width="120.871" height="57.7132"/>
+  <object id="231" name="danger area" x="737.205" y="199.274" width="187.296" height="469.328"/>
+  <object id="232" name="danger area" x="510.708" y="30.49" width="188.385" height="485.662"/>
+  <object id="233" name="danger area" x="705.626" y="40.2904" width="212.341" height="89.2922"/>
+  <object id="234" name="danger area" x="158.984" y="200.363" width="317.967" height="180.762"/>
+  <object id="235" name="danger area" x="191.652" y="396.37" width="258.076" height="147.005"/>
+  <object id="236" name="danger area" x="152.45" y="34.8457" width="325.59" height="124.138"/>
+  <object id="237" name="danger area" x="32.6679" y="29.4011" width="92.559" height="190.563"/>
+  <object id="238" name="danger area" x="27.2232" y="221.053" width="65.3358" height="160.073"/>
  </objectgroup>
  <objectgroup id="4" name="objects">
   <object id="3" gid="567" x="930.667" y="925.333" width="32" height="32"/>
