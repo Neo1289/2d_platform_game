@@ -44,16 +44,16 @@
   <object id="212" name="dragon" x="-159.333" y="309.333">
    <point/>
   </object>
-  <object id="219" name="danger area" x="609.8" y="704.537" width="321.234" height="219.964"/>
-  <object id="227" name="danger area" x="128.494" y="708.893" width="448.639" height="221.053"/>
+  <object id="219" name="danger area" x="615.245" y="704.537" width="315.789" height="219.964"/>
+  <object id="227" name="danger area" x="128.494" y="708.893" width="438.839" height="221.053"/>
   <object id="228" name="danger area" x="37.0236" y="674.047" width="56.6243" height="252.632"/>
-  <object id="229" name="danger area" x="37.0236" y="568.421" width="667.514" height="107.804"/>
+  <object id="229" name="danger area" x="37.0236" y="568.421" width="656.625" height="93.6479"/>
   <object id="230" name="danger area" x="35.9347" y="507.441" width="120.871" height="57.7132"/>
-  <object id="231" name="danger area" x="737.205" y="199.274" width="187.296" height="469.328"/>
-  <object id="232" name="danger area" x="510.708" y="30.49" width="188.385" height="485.662"/>
-  <object id="233" name="danger area" x="705.626" y="40.2904" width="212.341" height="89.2922"/>
-  <object id="234" name="danger area" x="158.984" y="200.363" width="317.967" height="180.762"/>
-  <object id="235" name="danger area" x="191.652" y="396.37" width="258.076" height="147.005"/>
+  <object id="231" name="danger area" x="752.45" y="212.341" width="172.051" height="444.283"/>
+  <object id="232" name="danger area" x="523.775" y="30.49" width="164.429" height="471.506"/>
+  <object id="233" name="danger area" x="705.626" y="40.2904" width="212.341" height="79.4918"/>
+  <object id="234" name="danger area" x="176.407" y="209.074" width="291.833" height="158.983"/>
+  <object id="235" name="danger area" x="191.652" y="407.259" width="258.076" height="136.116"/>
   <object id="236" name="danger area" x="152.45" y="34.8457" width="325.59" height="124.138"/>
   <object id="237" name="danger area" x="32.6679" y="29.4011" width="92.559" height="190.563"/>
   <object id="238" name="danger area" x="27.2232" y="221.053" width="65.3358" height="160.073"/>

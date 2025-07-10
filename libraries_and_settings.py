@@ -87,9 +87,11 @@ for file_name in listdir(dragon_folder):
 # enemies dictionary images
 # ---------------------------
 
-enemies_images = {"dragon":dragon,"bat":bat,"scheleton":scheleton,"flame":flame,"ice":ice}
-enemies_speed = {"dragon":110,"bat":80,"scheleton":30,"flame":0,"ice":100}
-enemies_direction = {"dragon": [-1,1] ,"bat":[-1,1] ,"scheleton":[-1,1] ,"flame":[-1,1],"ice":[-1,1]}
+enemies_images = {"dragon":dragon,"bat":bat,"scheleton":scheleton,"flame":flame,"ice":ice,"bat_1":bat}
+enemies_speed = {"dragon":110,"bat":80,"scheleton":30,"flame":0,"ice":100,"bat_1":80}
+enemies_direction = {"dragon": [-1,1] ,"bat":[-1,1] ,"scheleton":[-1,1] ,"flame":[-1,1],"ice":[-1,1],"bat_1":[-1,1]}
+spawning_time =  {'world':0,'house':0,'forest':0,'cemetery':20000,
+                  'dungeon':50000,'secret passage': 8000,'spawning area': 5000}
 
 # ---------------------------
 # player flame images

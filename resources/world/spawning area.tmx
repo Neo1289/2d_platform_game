@@ -93,34 +93,19 @@
   <object id="72" name="bat" x="1037" y="677.5">
    <point/>
   </object>
-  <object id="73" name="bat" x="1037" y="677.5">
+  <object id="73" name="bat_1" x="1037" y="677.5">
    <point/>
   </object>
-  <object id="74" name="bat" x="951" y="657.5">
+  <object id="75" name="bat" x="865.5" y="681">
    <point/>
   </object>
-  <object id="75" name="bat" x="805.5" y="651">
+  <object id="76" name="bat" type="bat_1" x="726.5" y="689.5">
    <point/>
   </object>
-  <object id="76" name="bat" x="661.5" y="645.5">
+  <object id="80" name="bat" x="1021.5" y="814.5">
    <point/>
   </object>
-  <object id="78" name="bat" x="739.5" y="640.5">
-   <point/>
-  </object>
-  <object id="79" name="bat" x="879.5" y="648.5">
-   <point/>
-  </object>
-  <object id="80" name="bat" x="1030.5" y="756.5">
-   <point/>
-  </object>
-  <object id="81" name="bat" x="1038" y="848.5">
-   <point/>
-  </object>
-  <object id="82" name="bat" x="1033" y="940">
-   <point/>
-  </object>
-  <object id="85" name="bat" x="1031.5" y="988">
+  <object id="85" name="bat" x="1041.5" y="932">
    <point/>
   </object>
   <object id="83" name="bat" x="1014.5" y="1047">
@@ -129,37 +114,16 @@
   <object id="84" name="bat" x="1014.5" y="1047">
    <point/>
   </object>
-  <object id="86" name="bat" x="912.5" y="1052.5">
+  <object id="86" name="bat" x="838.5" y="1099.5">
    <point/>
   </object>
-  <object id="87" name="bat" x="770" y="1049.5">
+  <object id="87" name="bat" x="616" y="1038.5">
    <point/>
   </object>
-  <object id="89" name="bat" x="669.5" y="1054.5">
+  <object id="89" name="bat" x="585.5" y="704.5">
    <point/>
   </object>
-  <object id="77" name="bat" x="636.5" y="695.5">
-   <point/>
-  </object>
-  <object id="88" name="bat" x="637.5" y="1006">
-   <point/>
-  </object>
-  <object id="90" name="bat" x="638" y="948.5">
-   <point/>
-  </object>
-  <object id="91" name="bat" x="638.5" y="913.5">
-   <point/>
-  </object>
-  <object id="92" name="bat" x="638.5" y="784">
-   <point/>
-  </object>
-  <object id="93" name="bat" x="638.5" y="784">
-   <point/>
-  </object>
-  <object id="94" name="bat" x="634" y="737">
-   <point/>
-  </object>
-  <object id="95" name="bat" x="634" y="737">
+  <object id="93" name="bat" x="638.5" y="864">
    <point/>
   </object>
   <object id="98" name="secret passage" x="936.5" y="706.5" width="48.5" height="48.5"/>
