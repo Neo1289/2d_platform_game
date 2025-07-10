@@ -4,7 +4,7 @@ from libraries_and_settings import (pygame,
                                     random)
 ###CONFIGURATIONS
 from libraries_and_settings import (display_surface, maps, TILE_SIZE, WINDOW_HEIGHT,WINDOW_WIDTH,
-                                    font,enemies_images,enemies_speed,enemies_direction)
+                                    font,enemies_images,enemies_speed,enemies_direction,spawning_time)
 from words_library import phrases
 
 ###SPRITES
@@ -29,6 +29,7 @@ class Game:
         self.phrases = phrases
         self.enemies_images = enemies_images
         self.enemies_direction = enemies_direction
+        self.enemies_list = list(self.enemies_images.keys())
 
         self.collision_sprites = pygame.sprite.Group()
         self.all_sprites = allSpritesOffset()
@@ -43,13 +44,13 @@ class Game:
             'runes dust' : 0,
             'nothing useful' : 0
         }
+        self.spawning_time = spawning_time
 
         self.game_objects = ['potion','crystal ball','coin','runes dust','nothing useful']
         self.weights = [0.4,0.1,0.49,0.01,1]
         self.last_item = ''
 
         self.custom_event = pygame.event.custom_type()
-        pygame.time.set_timer(self.custom_event, 5000)
 
     def mapping(self):
 
@@ -75,10 +76,17 @@ class Game:
                     self.player.collision_rect.center = (obj.x, obj.y)
                     self.all_sprites.add(self.player)
 
-            elif obj.name not in ('bat', 'scheleton', 'wall', 'flame', 'dragon','ice'):
+            elif obj.name not in self.enemies_list:
                 self.area_group[obj.name] = AreaSprite(obj.x, obj.y, obj.width, obj.height, self.all_sprites,obj.name)
             else:
-                self.monster = NPC((obj.x,obj.y),self.enemies_images[obj.name],self.all_sprites,obj.name,enemies_speed[obj.name],True,self.enemies_direction[obj.name],follow_player=obj.name in ['scheleton','dragon'])
+                self.monsters()
+
+    def monsters(self):
+        for obj in self.current_map.get_layer_by_name('areas'):
+            if obj.name in  self.enemies_list:
+                self.monster = NPC((obj.x, obj.y), self.enemies_images[obj.name], self.all_sprites, obj.name,
+                                   enemies_speed[obj.name], True, self.enemies_direction[obj.name],
+                                   follow_player=obj.name in ['scheleton', 'dragon','bat_1'])
                 self.monster.player = self.player
 
     def enter_area_check(self,event):
@@ -90,6 +98,8 @@ class Game:
         if self.transition_bool:
             self.mapping()
             self.transition_bool = False
+
+            pygame.time.set_timer(self.custom_event, self.spawning_time[self.current_area])
 
     def rendering(self):
         self.text_surface = None
@@ -164,7 +174,7 @@ class Game:
                 self.enter_area_check(event)
                 self.collect_resources(event)
                 if event.type == self.custom_event:
-                    print('ok')
+                    self.monsters()
 
             self.display_surface.fill('black')
             self.all_sprites.update(dt)
@@ -172,6 +182,7 @@ class Game:
             self.rendering()
             self.display_captions()
             self.collision_detection()
+            print(self.current_area,self.spawning_time[self.current_area])
             pygame.display.update()
 
         pygame.quit()
