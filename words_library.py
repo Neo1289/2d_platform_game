@@ -1,8 +1,8 @@
 phrases = {
     "text_1" : "do you want to sell your crystal balls? \n"
-                                     "Press E to see your tradable resources. S to sell \n"
-                                     "B to buy potions\n"
-                                     "N to buy the holy water"
+                                     "S to sell them, 3 coins a piece \n"
+                                     "B to buy potions, 3 coins a piece \n"
+                                     "N to buy the holy water, 5 coins a piece"
     ,
     "text_2" : "do you want inspect the ",
     "text_3" : "do you want to collect the energy of the runes?",

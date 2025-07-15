@@ -6,7 +6,7 @@ class Player(pygame.sprite.Sprite):
     SPEED = 200
     COLLISION_SHRINK = 30
     ANIMATION_SPEED = 10
-    INITIAL_LIFE = 100
+    INITIAL_LIFE = 1000
 
     # Direction mappings for cleaner code
     DIRECTIONS = {

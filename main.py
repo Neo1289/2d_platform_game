@@ -114,6 +114,9 @@ class Game:
             if self.object_id(obj):
                self.text = f"{self.phrases["text_2"]}{obj.name}?"
                self.text_surface = font.render(self.text, True, "white")
+            elif self.human_id(obj):
+                self.text = f"{self.phrases["text_1"]}"
+                self.text_surface = font.render(self.text, True, "white")
 
         if self.text_surface:
             text_rect = self.text_surface.get_rect(center=(WINDOW_WIDTH // 3, WINDOW_HEIGHT // 4))
@@ -133,10 +136,26 @@ class Game:
                         self.last_item = choice
                     obj.resources -= 1
 
+    def trading(self,event):
+        for obj in self.collision_sprites:
+            if self.human_id(obj):
+                if self.key_down(event,"s") and self.inventory["crystal ball"] > 0:
+                    self.inventory["crystal ball"] -= 1
+                    self.inventory["coin"] += 3
+                if self.key_down(event, "b") and self.inventory["coin"] >= 3:
+                    self.inventory["coin"] -= 3
+                    self.inventory["potion"] += 1
+
     def collision_detection(self):
         for obj in self.all_sprites:
             if obj.rect.colliderect(self.player.rect):
                 if hasattr(obj, "dangerous"): self.player.life -= 1
+
+        if self.player.life <= 0:
+            self.caption = pygame.display.set_caption('GAME OVER')
+            pygame.time.delay(5000)
+            pygame.quit()
+            sys.exit()
 
     def display_captions(self):
         time_sec = pygame.time.get_ticks() // 1000
@@ -161,6 +180,10 @@ class Game:
                                                                                            "human")  and obj.resources > 0:
             return True
 
+    def human_id(self,obj):
+        if obj.rect.colliderect(self.player.rect) and hasattr(obj, "human"):
+            return True
+
     def key_down(self, event, key: str):
         return event.type == pygame.KEYDOWN and event.key == getattr(pygame, f"K_{key}")
 
@@ -173,6 +196,7 @@ class Game:
                     sys.exit()
                 self.enter_area_check(event)
                 self.collect_resources(event)
+                self.trading(event)
                 if event.type == self.custom_event:
                     self.monsters()
 
@@ -182,7 +206,6 @@ class Game:
             self.rendering()
             self.display_captions()
             self.collision_detection()
-            print(self.current_area,self.spawning_time[self.current_area])
             pygame.display.update()
 
         pygame.quit()
