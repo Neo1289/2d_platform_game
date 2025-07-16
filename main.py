@@ -36,6 +36,7 @@ class Game:
         self.all_sprites = allSpritesOffset()
         self.player = None
         self.timepin = None
+        self.time_event = None
 
         self.inventory = {
             'potion': 1,
@@ -107,7 +108,7 @@ class Game:
         self.text_surface = None
         ###determine the current area map to be loaded and print it
         for name, area in self.area_group.items():
-            if area.rect.colliderect(self.player.rect) and name != 'danger area':
+            if area.rect.colliderect(self.player.rect) and name not in ('danger area','recall'):
                 self.current_area = name
                 self.text = f"You found a {name} press Y to enter"
                 self.text_surface = font.render(self.text,True,"white")
@@ -145,6 +146,7 @@ class Game:
         if self.key_down(event, "2") and self.inventory['holy water'] > 0:
             self.inventory['holy water'] -= 1
             self.timepin = pygame.time.get_ticks() // 1000
+            self.time_event = 'holy water'
 
     def trading(self,event):
         for obj in self.collision_sprites:
@@ -163,6 +165,10 @@ class Game:
         for obj in self.all_sprites:
             if obj.rect.colliderect(self.player.rect):
                 if hasattr(obj, "dangerous"): self.player.life -= 1
+
+        for name, area in self.area_group.items():
+          if area.rect.colliderect(self.player.rect) and name == 'recall':
+              self.monsters()
 
         if self.player.life <= 0:
             self.caption = pygame.display.set_caption('GAME OVER')
@@ -201,10 +207,9 @@ class Game:
         return event.type == pygame.KEYDOWN and event.key == getattr(pygame, f"K_{key}")
 
     def time_events(self):
-        if self.timepin:
-            if (self.current_time - self.timepin) < self.timers["holy potion"]:
+        if self.time_event == 'holy water':
+            if (self.current_time - self.timepin) < self.timers[self.time_event]:
                 self.player.life = 1000
-            ###FIX THIS WHEN YOU NEED TO INTRODUCE ANOTHER TIME BASED EVENT
 
     def run(self):
         while self.running:
