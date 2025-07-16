@@ -96,16 +96,10 @@
   <object id="73" name="bat_1" x="1037" y="677.5">
    <point/>
   </object>
-  <object id="75" name="bat" x="865.5" y="681">
-   <point/>
-  </object>
   <object id="76" name="bat" type="bat_1" x="726.5" y="689.5">
    <point/>
   </object>
   <object id="80" name="bat" x="1021.5" y="814.5">
-   <point/>
-  </object>
-  <object id="85" name="bat" x="1041.5" y="932">
    <point/>
   </object>
   <object id="83" name="bat" x="1014.5" y="1047">

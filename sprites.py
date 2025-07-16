@@ -26,7 +26,7 @@ class GeneralSprite(pygame.sprite.Sprite):
                 self.spawn_timer += dt
                 if self.spawn_timer >= self.spawn_cooldown:
                     new_x = random.randint(600, 800)
-                    new_y = random.randint(600, 900)
+                    new_y = random.randint(700, 1000)
                     self.rect.center = (new_x, new_y)
                     self.spawn_timer = 0
         except:
