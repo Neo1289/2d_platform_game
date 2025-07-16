@@ -4,7 +4,7 @@ from libraries_and_settings import (pygame,
                                     random)
 ###CONFIGURATIONS
 from libraries_and_settings import (display_surface, maps, TILE_SIZE, WINDOW_HEIGHT,WINDOW_WIDTH,
-                                    font,enemies_images,enemies_speed,enemies_direction,spawning_time)
+                                    font,enemies_images,enemies_speed,enemies_direction,spawning_time,timers)
 from words_library import phrases
 
 ###SPRITES
@@ -20,6 +20,7 @@ class Game:
         self.running = True
         self.display_surface = display_surface
         self.clock = pygame.time.Clock()
+        self.timers = timers
 
         self.maps = maps
         self.current_map = None
@@ -34,13 +35,14 @@ class Game:
         self.collision_sprites = pygame.sprite.Group()
         self.all_sprites = allSpritesOffset()
         self.player = None
+        self.timepin = None
 
         self.inventory = {
             'potion': 1,
             'crystal ball': 1,
             'coin': 0,
             'keys': 0,
-            'holy water': 0,
+            'holy water': 2,
             'runes dust' : 0,
             'nothing useful' : 0
         }
@@ -136,6 +138,14 @@ class Game:
                         self.last_item = choice
                     obj.resources -= 1
 
+    def user_resources(self,event):
+        if self.key_down(event, "1") and self.inventory['potion'] > 0:
+            self.player.life = 1000
+            self.inventory['potion'] -= 1
+        if self.key_down(event, "2") and self.inventory['holy water'] > 0:
+            self.inventory['holy water'] -= 1
+            self.timepin = pygame.time.get_ticks() // 1000
+
     def trading(self,event):
         for obj in self.collision_sprites:
             if self.human_id(obj):
@@ -145,6 +155,9 @@ class Game:
                 if self.key_down(event, "b") and self.inventory["coin"] >= 3:
                     self.inventory["coin"] -= 3
                     self.inventory["potion"] += 1
+                if self.key_down(event, "n") and self.inventory["coin"] >= 5:
+                    self.inventory["coin"] -= 3
+                    self.inventory["holy water"] += 1
 
     def collision_detection(self):
         for obj in self.all_sprites:
@@ -187,15 +200,23 @@ class Game:
     def key_down(self, event, key: str):
         return event.type == pygame.KEYDOWN and event.key == getattr(pygame, f"K_{key}")
 
+    def time_events(self):
+        if self.timepin:
+            if (self.current_time - self.timepin) < self.timers["holy potion"]:
+                self.player.life = 1000
+            ###FIX THIS WHEN YOU NEED TO INTRODUCE ANOTHER TIME BASED EVENT
+
     def run(self):
         while self.running:
             dt = self.clock.tick(60) / 1000
+            self.current_time = pygame.time.get_ticks() // 1000
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
                     sys.exit()
                 self.enter_area_check(event)
                 self.collect_resources(event)
+                self.user_resources(event)
                 self.trading(event)
                 if event.type == self.custom_event:
                     self.monsters()
@@ -206,6 +227,8 @@ class Game:
             self.rendering()
             self.display_captions()
             self.collision_detection()
+            self.time_events()
+
             pygame.display.update()
 
         pygame.quit()

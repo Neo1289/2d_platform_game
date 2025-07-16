@@ -93,6 +93,8 @@ enemies_direction = {"dragon": [-1,1] ,"bat":[-1,1] ,"scheleton":[-1,1] ,"flame"
 spawning_time =  {'world':0,'house':0,'forest':0,'cemetery':20000,
                   'dungeon':50000,'secret passage': 8000,'spawning area': 5000,'alchemist house' : 1000,'frozen house' : 2000}
 
+timers = {"holy potion" : 10}
+
 # ---------------------------
 # player flame images
 # ---------------------------
