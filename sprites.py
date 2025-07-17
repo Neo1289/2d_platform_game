@@ -1,4 +1,4 @@
-from libraries_and_settings import pygame,random
+from libraries_and_settings import pygame,random,path
 
 class GeneralSprite(pygame.sprite.Sprite):
     def __init__(self, pos, surf, groups, ground_att: bool, name: str= None, resources: int= 0, item: bool= None):
@@ -75,4 +75,17 @@ class NPC(pygame.sprite.Sprite):
         self.animate(dt)
         self.move(dt)
         if self.rect.center > (3000,3000) or self.rect.center < (-3000,-3000) :
+            self.kill()
+
+
+class Rune(pygame.sprite.Sprite):
+    def __init__(self, pos, groups):
+        super().__init__(groups)
+        self.image = pygame.image.load(path.join('resources','player','rune_bullet.png')).convert_alpha()
+        self.rect = self.image.get_rect(center=pos)
+        self.spawn_time = pygame.time.get_ticks()
+
+    def update(self, dt):
+        current_time = pygame.time.get_ticks()
+        if current_time - self.spawn_time >= 30000:
             self.kill()

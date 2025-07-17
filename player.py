@@ -1,4 +1,5 @@
 from libraries_and_settings import pygame, walk, path, join
+from sprites import Rune
 
 
 class Player(pygame.sprite.Sprite):
@@ -22,14 +23,24 @@ class Player(pygame.sprite.Sprite):
         self.frame_index = 0
         self.direction = pygame.Vector2()
         self.life = self.INITIAL_LIFE
-        self.runes_found = 0
 
         # Store references
         self.collision_sprites = collision_sprites
+        self.groups = groups
 
         # Load and setup graphics
         self._load_images()
         self._setup_rects(pos)
+
+        self.inventory = {
+            'potion': 1,
+            'crystal ball': 1,
+            'coin': 0,
+            'keys': 0,
+            'holy water': 2,
+            'runes dust': 0,
+            'nothing useful': 0
+        }
 
     def _setup_rects(self, pos):
         """Initialize player rectangles for rendering and collision"""
@@ -112,8 +123,14 @@ class Player(pygame.sprite.Sprite):
         frames = self.frames[self.state]
         self.image = frames[int(self.frame_index) % len(frames)]
 
+    def attack(self):
+        keys = pygame.key.get_pressed()
+        if (keys[pygame.K_t]) and self.inventory['runes dust'] > 0:
+            self.inventory['runes dust'] -= 1
+            Rune(self.rect.center, self.groups)
+
     def update(self, dt):
-        """Main update method called each frame"""
+        self.attack()
         self._get_input()
         self._move(dt)
         self._animate(dt)
