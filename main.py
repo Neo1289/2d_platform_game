@@ -10,7 +10,7 @@ from words_library import phrases
 ###SPRITES
 from player import Player
 from camera import allSpritesOffset
-from sprites import GeneralSprite,AreaSprite,NPC
+from sprites import GeneralSprite,AreaSprite,NPC,Rune
 
 pygame.init()
 
@@ -38,15 +38,6 @@ class Game:
         self.timepin = None
         self.time_event = None
 
-        self.inventory = {
-            'potion': 1,
-            'crystal ball': 1,
-            'coin': 0,
-            'keys': 0,
-            'holy water': 2,
-            'runes dust' : 0,
-            'nothing useful' : 0
-        }
         self.spawning_time = spawning_time
 
         self.game_objects = ['potion','crystal ball','coin','runes dust','nothing useful']
@@ -130,36 +121,36 @@ class Game:
             if self.object_id(obj):
                 if self.key_down(event, "y"):
                     if hasattr(obj,'rune'):
-                        self.inventory['runes dust']+= 1
+                        self.player.inventory['runes dust']+= 1
                         obj.kill()
                         self.last_item = 'runes dust'
                     else:
                         choice = random.choices(self.game_objects,weights=self.weights,k=1)[0]
-                        self.inventory[choice]+= 1
+                        self.player.inventory[choice]+= 1
                         self.last_item = choice
                     obj.resources -= 1
 
     def user_resources(self,event):
-        if self.key_down(event, "1") and self.inventory['potion'] > 0:
+        if self.key_down(event, "1") and self.player.inventory['potion'] > 0:
             self.player.life = 1000
-            self.inventory['potion'] -= 1
-        if self.key_down(event, "2") and self.inventory['holy water'] > 0:
-            self.inventory['holy water'] -= 1
+            self.player.inventory['potion'] -= 1
+        if self.key_down(event, "2") and self.player.inventory['holy water'] > 0:
+            self.player.inventory['holy water'] -= 1
             self.timepin = pygame.time.get_ticks() // 1000
             self.time_event = 'holy water'
 
     def trading(self,event):
         for obj in self.collision_sprites:
             if self.human_id(obj):
-                if self.key_down(event,"s") and self.inventory["crystal ball"] > 0:
-                    self.inventory["crystal ball"] -= 1
-                    self.inventory["coin"] += 3
+                if self.key_down(event,"s") and self.player.inventory["crystal ball"] > 0:
+                    self.player.inventory["crystal ball"] -= 1
+                    self.player.inventory["coin"] += 3
                 if self.key_down(event, "b") and self.inventory["coin"] >= 3:
-                    self.inventory["coin"] -= 3
-                    self.inventory["potion"] += 1
+                    self.player.inventory["coin"] -= 3
+                    self.player.inventory["potion"] += 1
                 if self.key_down(event, "n") and self.inventory["coin"] >= 5:
-                    self.inventory["coin"] -= 3
-                    self.inventory["holy water"] += 1
+                    self.player.inventory["coin"] -= 3
+                    self.player.inventory["holy water"] += 1
 
     def collision_detection(self):
         for obj in self.all_sprites:
@@ -176,15 +167,23 @@ class Game:
             pygame.quit()
             sys.exit()
 
+    def check_rune_collisions(self):
+        enemies = [sprite for sprite in self.all_sprites if isinstance(sprite, NPC)]
+        rune_group = pygame.sprite.Group([sprite for sprite in self.all_sprites if isinstance(sprite, (Rune))])
+        for enemy in enemies:
+            rune_hits = pygame.sprite.spritecollide(enemy,rune_group, False)
+            if rune_hits:
+                enemy.kill()
+
     def display_captions(self):
         time_sec = pygame.time.get_ticks() // 1000
         self.caption = (f"\u2665 {self.player.life}     "
-                        f"\U0001F9EA {self.inventory['potion']}     "
-                        f"\U0001F52E {self.inventory['crystal ball']}     "
-                        f"\U0001F4B0 {self.inventory['coin']}     "
-                        f"\U0001F5DD {self.inventory['keys']}     "
-                        f"\u2697\ufe0f {self.inventory['holy water']}     "
-                        f"\U0001F4AB {self.inventory['runes dust']}     "
+                        f"\U0001F9EA {self.player.inventory['potion']}     "
+                        f"\U0001F52E {self.player.inventory['crystal ball']}     "
+                        f"\U0001F4B0 {self.player.inventory['coin']}     "
+                        f"\U0001F5DD {self.player.inventory['keys']}     "
+                        f"\u2697\ufe0f {self.player.inventory['holy water']}     "
+                        f"\U0001F4AB {self.player.inventory['runes dust']}     "
                         f"timer: {time_sec}          "
                         f"last item found: {self.last_item}     "
                         )
@@ -233,6 +232,7 @@ class Game:
             self.display_captions()
             self.collision_detection()
             self.time_events()
+            self.check_rune_collisions()
 
             pygame.display.update()
 
