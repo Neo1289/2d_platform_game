@@ -94,7 +94,7 @@ spawning_time =  {'world':0,'house':0,'forest':0,'cemetery':20000,
                   'dungeon' : 50000,'secret passage': 8000,'spawning area': 5000,'alchemist house' : 1000000,'frozen house' : 2000,
                   'maze' : 2500}
 
-timers = {"holy water" : 10}
+timers = {"holy water" : 10,"recall" : 1}
 
 # ---------------------------
 # player flame images
