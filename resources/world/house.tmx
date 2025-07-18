@@ -147,6 +147,5 @@
    <point/>
   </object>
   <object id="48" name="world" x="1017.3" y="1162.79" width="39.1212" height="49.7879"/>
-  <object id="77" name="spawning area" x="1139.33" y="842" width="68.6667" height="75.3333"/>
  </objectgroup>
 </map>

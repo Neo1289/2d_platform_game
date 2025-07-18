@@ -99,10 +99,14 @@ class Game:
         self.text_surface = None
         ###determine the current area map to be loaded and print it
         for name, area in self.area_group.items():
-            if area.rect.colliderect(self.player.rect) and name not in ('danger area','recall'):
-                self.current_area = name
-                self.text = f"You found a {name} press Y to enter"
-                self.text_surface = font.render(self.text,True,"white")
+            if area.rect.colliderect(self.player.rect):
+                    if name not in ('danger area','recall'):
+                        self.current_area = name
+                        self.text = f"You found a {name} press Y to enter"
+                        self.text_surface = font.render(self.text,True,"white")
+                    elif name == 'recall':
+                        self.time_event = 'recall'
+                        self.timepin = pygame.time.get_ticks() // 1000
 
         for obj in self.collision_sprites:
             if self.object_id(obj):
@@ -157,10 +161,6 @@ class Game:
             if obj.rect.colliderect(self.player.rect):
                 if hasattr(obj, "dangerous"): self.player.life -= 1
 
-        for name, area in self.area_group.items():
-          if area.rect.colliderect(self.player.rect) and name == 'recall':
-              self.monsters()
-
         if self.player.life <= 0:
             self.caption = pygame.display.set_caption('GAME OVER')
             pygame.time.delay(5000)
@@ -205,10 +205,14 @@ class Game:
     def key_down(self, event, key: str):
         return event.type == pygame.KEYDOWN and event.key == getattr(pygame, f"K_{key}")
 
-    def time_events(self):
-        if self.time_event == 'holy water':
-            if (self.current_time - self.timepin) < self.timers[self.time_event]:
-                self.player.life = 1000
+    def time_(self):
+        return (self.current_time - self.timepin) < self.timers[self.time_event]
+
+    def time_checker(self):
+        if self.time_event =='holy water' and self.time_():
+            self.player.life = 1000
+        if self.time_event == 'recall' and not self.time_():
+            self.monsters()
 
     def run(self):
         while self.running:
@@ -231,7 +235,7 @@ class Game:
             self.rendering()
             self.display_captions()
             self.collision_detection()
-            self.time_events()
+            self.time_checker()
             self.check_rune_collisions()
 
             pygame.display.update()
