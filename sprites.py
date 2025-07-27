@@ -1,5 +1,12 @@
 from libraries_and_settings import pygame,random,path
 
+
+class TimeUpdate:
+    def update(self,dt):
+        current_time = pygame.time.get_ticks()
+        if hasattr(self, 'spawn_time') and (current_time - self.spawn_time) >= 30000:
+            self.kill()
+
 class GeneralSprite(pygame.sprite.Sprite):
     def __init__(self, pos, surf, groups, ground_att: bool, name: str= None, resources: int= 0, item: bool= None):
          super().__init__(groups)
@@ -41,7 +48,7 @@ class AreaSprite(pygame.sprite.Sprite):
         if name == 'danger area': self.dangerous = True
 
 #######################
-class NPC(pygame.sprite.Sprite):
+class NPC(pygame.sprite.Sprite,TimeUpdate):
     def __init__(self,pos,frames,groups,name: str,speed: int,dangerous: bool, direction: list = None, follow_player: bool = False):
         super().__init__(groups)
 
@@ -58,6 +65,7 @@ class NPC(pygame.sprite.Sprite):
         self.name = name
         self.follow_player = follow_player
         self.player = None
+        self.spawn_time = pygame.time.get_ticks()
 
     def animate(self, dt):
             self.frames_index += self.animation_speed * dt
@@ -74,11 +82,9 @@ class NPC(pygame.sprite.Sprite):
     def update(self, dt):
         self.animate(dt)
         self.move(dt)
-        if self.rect.center > (3000,3000) or self.rect.center < (-3000,-3000) :
-            self.kill()
+        TimeUpdate.update(self, dt)
 
-
-class Rune(pygame.sprite.Sprite):
+class Rune(pygame.sprite.Sprite,TimeUpdate):
     def __init__(self, pos, groups):
         super().__init__(groups)
         self.image = pygame.image.load(path.join('resources','player','rune_bullet.png')).convert_alpha()
@@ -86,6 +92,4 @@ class Rune(pygame.sprite.Sprite):
         self.spawn_time = pygame.time.get_ticks()
 
     def update(self, dt):
-        current_time = pygame.time.get_ticks()
-        if current_time - self.spawn_time >= 30000:
-            self.kill()
+        TimeUpdate.update(self,dt)
