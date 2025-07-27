@@ -38,7 +38,7 @@ class Player(pygame.sprite.Sprite):
             'coin': 0,
             'keys': 0,
             'holy water': 2,
-            'runes dust': 0,
+            'runes dust': 1,
             'nothing useful': 0
         }
 
