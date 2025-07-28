@@ -35,7 +35,6 @@ class Game:
         self.collision_sprites = pygame.sprite.Group()
         self.all_sprites = allSpritesOffset()
         self.player = None
-        self.timepin = None
         self.time_event = None
 
         self.spawning_time = spawning_time
@@ -106,7 +105,6 @@ class Game:
                         self.text_surface = font.render(self.text,True,"white")
                     elif name == 'recall':
                         self.time_event = 'recall'
-                        self.timepin = pygame.time.get_ticks() // 1000
 
         for obj in self.collision_sprites:
             if self.object_id(obj):
@@ -140,7 +138,6 @@ class Game:
             self.player.inventory['potion'] -= 1
         if self.key_down(event, "2") and self.player.inventory['holy water'] > 0:
             self.player.inventory['holy water'] -= 1
-            self.timepin = pygame.time.get_ticks() // 1000
             self.time_event = 'holy water'
 
     def trading(self,event):
@@ -206,13 +203,12 @@ class Game:
         return event.type == pygame.KEYDOWN and event.key == getattr(pygame, f"K_{key}")
 
     def time_(self):
-        return (self.current_time - self.timepin) < self.timers[self.time_event]
+        return self.current_time < self.timers[self.time_event]
 
     def time_checker(self):
         if self.time_event =='holy water' and self.time_():
             self.player.life = 1000
-        if self.time_event == 'recall' and not self.time_():
-            self.monsters()
+            print(self.time_())
 
     def run(self):
         while self.running:
@@ -237,6 +233,8 @@ class Game:
             self.collision_detection()
             self.time_checker()
             self.check_rune_collisions()
+
+            print(self.current_time)
 
             pygame.display.update()
 

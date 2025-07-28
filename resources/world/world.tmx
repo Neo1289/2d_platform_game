@@ -492,7 +492,7 @@
   </object>
   <object id="379" name="cemetery" x="614.667" y="1352" width="162.667" height="105.333"/>
   <object id="415" name="dungeon" x="554.5" y="508.5" width="27.5" height="34.5"/>
-  <object id="466" name="recall" x="789.837" y="938.512" width="30.1996" height="18.5844"/>
+  <object id="466" name="recall" x="789.837" y="945.179" width="23.5329" height="11.9177"/>
   <object id="467" name="scheleton" x="357.75" y="991.942">
    <point/>
   </object>
