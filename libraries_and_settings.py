@@ -92,7 +92,7 @@ enemies_speed = {"dragon":110,"bat":80,"scheleton":30,"flame":0,"ice":100,"bat_1
 enemies_direction = {"dragon": [-1,1] ,"bat":[-1,1] ,"scheleton":[-1,1] ,"flame":[-1,1],"ice":[-1,1],"bat_1":[-1,1]}
 spawning_time =  {'world':0,'house':0,'forest':0,'cemetery':20000,
                   'dungeon' : 50000,'secret passage': 8000,'spawning area': 5000,'alchemist house' : 1000000,'frozen house' : 2000,
-                  'maze' : 2500}
+                  'maze' : 2500, 'abandoned house': 0}
 
 timers = {"holy water" : 10,"recall" : 1}
 
