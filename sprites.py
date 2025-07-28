@@ -1,10 +1,11 @@
-from libraries_and_settings import pygame,random,path
+from libraries_and_settings import pygame,random,path,lasting_time
 
 
 class TimeUpdate:
-    def update(self,dt):
+    def update(self,dt,name:str):
         current_time = pygame.time.get_ticks()
-        if hasattr(self, 'spawn_time') and (current_time - self.spawn_time) >= 30000:
+        self.lasting_time = lasting_time
+        if hasattr(self, 'spawn_time') and (current_time - self.spawn_time) >= self.lasting_time[name]:
             self.kill()
 
 class GeneralSprite(pygame.sprite.Sprite):
@@ -82,7 +83,7 @@ class NPC(pygame.sprite.Sprite,TimeUpdate):
     def update(self, dt):
         self.animate(dt)
         self.move(dt)
-        TimeUpdate.update(self, dt)
+        TimeUpdate.update(self,dt,self.name)
 
 class Rune(pygame.sprite.Sprite,TimeUpdate):
     def __init__(self, pos, groups):
@@ -91,5 +92,5 @@ class Rune(pygame.sprite.Sprite,TimeUpdate):
         self.rect = self.image.get_rect(center=pos)
         self.spawn_time = pygame.time.get_ticks()
 
-    def update(self, dt):
-        TimeUpdate.update(self,dt)
+    def update(self,dt):
+        TimeUpdate.update(self,dt,Rune.__name__)
