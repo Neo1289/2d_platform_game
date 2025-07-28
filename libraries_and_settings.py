@@ -96,6 +96,8 @@ spawning_time =  {'world':0,'house':0,'forest':0,'cemetery':20000,
 
 timers = {"holy water" : 10,"recall" : 1}
 
+lasting_time = {'Rune': 10000 , 'scheleton': 30000, 'flame': 300000000,'dragon': 3000000,'ice': 5000,'bat_1': 50000,'bat': 10000}
+
 # ---------------------------
 # player flame images
 # ---------------------------
@@ -107,3 +109,5 @@ for file_name in listdir(player_flame_folder):
     surf = pygame.image.load(full_path).convert()
     surf.set_colorkey((31, 16, 42))
     player_flame_frames.append(surf)
+
+
