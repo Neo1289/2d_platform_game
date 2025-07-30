@@ -4,7 +4,7 @@ from libraries_and_settings import (pygame,
                                     random)
 ###CONFIGURATIONS
 from libraries_and_settings import (display_surface, maps, TILE_SIZE, WINDOW_HEIGHT,WINDOW_WIDTH,
-                                    font,enemies_images,enemies_speed,enemies_direction,spawning_time,timers)
+                                    font,enemies_images,enemies_speed,enemies_direction,spawning_time)
 from words_library import phrases
 
 ###SPRITES
@@ -20,7 +20,7 @@ class Game:
         self.running = True
         self.display_surface = display_surface
         self.clock = pygame.time.Clock()
-        self.timers = timers
+        self.start_time = 0
 
         self.maps = maps
         self.current_map = None
@@ -35,7 +35,6 @@ class Game:
         self.collision_sprites = pygame.sprite.Group()
         self.all_sprites = allSpritesOffset()
         self.player = None
-        self.time_event = None
 
         self.spawning_time = spawning_time
 
@@ -103,9 +102,7 @@ class Game:
                         self.current_area = name
                         self.text = f"You found a {name} press Y to enter"
                         self.text_surface = font.render(self.text,True,"white")
-                    elif name == 'recall':
-                        self.time_event = 'recall'
-
+                    
         for obj in self.collision_sprites:
             if self.object_id(obj):
                self.text = f"{self.phrases["text_2"]}{obj.name}?"
@@ -138,7 +135,6 @@ class Game:
             self.player.inventory['potion'] -= 1
         if self.key_down(event, "2") and self.player.inventory['holy water'] > 0:
             self.player.inventory['holy water'] -= 1
-            self.time_event = 'holy water'
 
     def trading(self,event):
         for obj in self.collision_sprites:
@@ -202,26 +198,27 @@ class Game:
     def key_down(self, event, key: str):
         return event.type == pygame.KEYDOWN and event.key == getattr(pygame, f"K_{key}")
 
-    def time_(self):
-        return self.current_time < self.timers[self.time_event]
+    def timing(self):
+        time_event = (pygame.time.get_ticks() - self.start_time) // 1000
+        print(time_event)
+        return time_event
 
-    def time_checker(self):
-        if self.time_event =='holy water' and self.time_():
-            self.player.life = 1000
-            print(self.time_())
+    def reset_timer(self,event):
+        if self.key_down(event,'2'):
+            self.start_time = pygame.time.get_ticks()
 
     def run(self):
         while self.running:
             dt = self.clock.tick(60) / 1000
-            self.current_time = pygame.time.get_ticks() // 1000
+
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
                     sys.exit()
                 self.enter_area_check(event)
                 self.collect_resources(event)
-                self.user_resources(event)
                 self.trading(event)
+                self.reset_timer(event)
                 if event.type == self.custom_event:
                     self.monsters()
 
@@ -231,10 +228,8 @@ class Game:
             self.rendering()
             self.display_captions()
             self.collision_detection()
-            self.time_checker()
             self.check_rune_collisions()
-
-            print(self.current_time)
+            self.timing()
 
             pygame.display.update()
 

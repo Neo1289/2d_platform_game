@@ -94,8 +94,6 @@ spawning_time =  {'world':0,'house':0,'forest':0,'cemetery':20000,
                   'dungeon' : 50000,'secret passage': 8000,'spawning area': 5000,'alchemist house' : 1000000,'frozen house' : 2000,
                   'maze' : 2500, 'abandoned house': 0}
 
-timers = {"holy water" : 10,"recall" : 10}
-
 lasting_time = {'Rune': 10000 , 'scheleton': 30000, 'flame': 300000000,'dragon': 3000000,'ice': 5000,'bat_1': 50000,'bat': 10000}
 
 # ---------------------------
