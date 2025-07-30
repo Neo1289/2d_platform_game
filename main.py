@@ -21,6 +21,7 @@ class Game:
         self.display_surface = display_surface
         self.clock = pygame.time.Clock()
         self.start_time = 0
+        self.key_event = None
 
         self.maps = maps
         self.current_map = None
@@ -102,7 +103,7 @@ class Game:
                         self.current_area = name
                         self.text = f"You found a {name} press Y to enter"
                         self.text_surface = font.render(self.text,True,"white")
-                    
+
         for obj in self.collision_sprites:
             if self.object_id(obj):
                self.text = f"{self.phrases["text_2"]}{obj.name}?"
@@ -196,12 +197,12 @@ class Game:
             return True
 
     def key_down(self, event, key: str):
+        if event.type == pygame.KEYDOWN:
+            self.key_event =  pygame.key.name(event.key)
         return event.type == pygame.KEYDOWN and event.key == getattr(pygame, f"K_{key}")
 
-    def timing(self):
-        time_event = (pygame.time.get_ticks() - self.start_time) // 1000
-        print(time_event)
-        return time_event
+    def event_timer(self):
+        self.time_event = (pygame.time.get_ticks() - self.start_time) // 1000
 
     def reset_timer(self,event):
         if self.key_down(event,'2'):
@@ -229,7 +230,9 @@ class Game:
             self.display_captions()
             self.collision_detection()
             self.check_rune_collisions()
-            self.timing()
+            self.event_timer()
+
+            print(self.key_event)
 
             pygame.display.update()
 
