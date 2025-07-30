@@ -4,7 +4,7 @@ from libraries_and_settings import (pygame,
                                     random)
 ###CONFIGURATIONS
 from libraries_and_settings import (display_surface, maps, TILE_SIZE, WINDOW_HEIGHT,WINDOW_WIDTH,
-                                    font,enemies_images,enemies_speed,enemies_direction,spawning_time)
+                                    font,enemies_images,enemies_speed,enemies_direction,spawning_time,key_list)
 from words_library import phrases
 
 ###SPRITES
@@ -22,6 +22,7 @@ class Game:
         self.clock = pygame.time.Clock()
         self.start_time = 0
         self.key_event = None
+        self.key_list = key_list
 
         self.maps = maps
         self.current_map = None
@@ -130,6 +131,14 @@ class Game:
                         self.last_item = choice
                     obj.resources -= 1
 
+    def event_timer(self):
+        self.time_event = (pygame.time.get_ticks() - self.start_time) // 1000
+
+    def reset_timer(self, event):
+        for i in self.key_list:
+            if self.key_down(event, i):
+                self.start_time = pygame.time.get_ticks()
+
     def user_resources(self,event):
         if self.key_down(event, "1") and self.player.inventory['potion'] > 0:
             self.player.life = 1000
@@ -198,15 +207,8 @@ class Game:
 
     def key_down(self, event, key: str):
         if event.type == pygame.KEYDOWN:
-            self.key_event =  pygame.key.name(event.key)
+            self.key_event = pygame.key.name(event.key)
         return event.type == pygame.KEYDOWN and event.key == getattr(pygame, f"K_{key}")
-
-    def event_timer(self):
-        self.time_event = (pygame.time.get_ticks() - self.start_time) // 1000
-
-    def reset_timer(self,event):
-        if self.key_down(event,'2'):
-            self.start_time = pygame.time.get_ticks()
 
     def run(self):
         while self.running:
@@ -231,8 +233,6 @@ class Game:
             self.collision_detection()
             self.check_rune_collisions()
             self.event_timer()
-
-            print(self.key_event)
 
             pygame.display.update()
 
