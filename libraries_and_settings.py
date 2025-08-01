@@ -96,7 +96,7 @@ spawning_time =  {'world':0,'house':0,'forest':0,'cemetery':20000,
 
 lasting_time = {'Rune': 10000 , 'scheleton': 30000, 'flame': 300000000,'dragon': 3000000,'ice': 5000,'bat_1': 50000,'bat': 10000}
 
-key_list = ['2','a']
+key_dict = {'1':[0,'potion',2], '2':[50,'holy water',1],'3':[0,'crystal ball',0]}
 
 # ---------------------------
 # player flame images

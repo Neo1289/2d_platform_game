@@ -4,7 +4,7 @@ from libraries_and_settings import (pygame,
                                     random)
 ###CONFIGURATIONS
 from libraries_and_settings import (display_surface, maps, TILE_SIZE, WINDOW_HEIGHT,WINDOW_WIDTH,
-                                    font,enemies_images,enemies_speed,enemies_direction,spawning_time,key_list)
+                                    font,enemies_images,enemies_speed,enemies_direction,spawning_time,key_dict)
 from words_library import phrases
 
 ###SPRITES
@@ -21,8 +21,9 @@ class Game:
         self.display_surface = display_surface
         self.clock = pygame.time.Clock()
         self.start_time = 0
-        self.key_event = None
-        self.key_list = key_list
+        self.duration_time = 0
+        self.temporary_action = None
+        self.key_dict = key_dict
 
         self.maps = maps
         self.current_map = None
@@ -40,8 +41,8 @@ class Game:
 
         self.spawning_time = spawning_time
 
-        self.game_objects = ['potion','crystal ball','coin','runes dust','nothing useful']
-        self.weights = [0.4,0.1,0.49,0.01,1]
+        self.game_objects = ['potion','crystal ball','coin','runes dust','nothing useful','holy water']
+        self.weights = [0.4,0.1,0.49,0.01,1,0.00001]
         self.last_item = ''
 
         self.custom_event = pygame.event.custom_type()
@@ -135,16 +136,23 @@ class Game:
         self.time_event = (pygame.time.get_ticks() - self.start_time) // 1000
 
     def reset_timer(self, event):
-        for i in self.key_list:
-            if self.key_down(event, i):
+        for key,value in self.key_dict.items():
+            #####value[time,action name,effect]
+            if self.key_down(event, key) and self.player.inventory[value[1]] > 0:
                 self.start_time = pygame.time.get_ticks()
+                self.duration_time = value[0]
+                self.player.inventory[value[1]] -= 1
+                self.temporary_action = value[1]
+                self.effect = value[2]
 
-    def user_resources(self,event):
-        if self.key_down(event, "1") and self.player.inventory['potion'] > 0:
-            self.player.life = 1000
-            self.player.inventory['potion'] -= 1
-        if self.key_down(event, "2") and self.player.inventory['holy water'] > 0:
-            self.player.inventory['holy water'] -= 1
+    def player_buffers(self):
+                for obj in self.game_objects:
+                    if self.duration_time >= self.time_event and self.temporary_action == obj:
+                        self.player.life += self.effect
+                        if self.temporary_action == 'crystal ball':
+                            position = (random.choice([100, -100, 50, -50, 200, -200, 0]) + self.player.rect.x,
+                                        random.choice([100, -100, 50, -50, 200, -200, 0]) + self.player.rect.y)
+                            Rune(position, self.all_sprites)
 
     def trading(self,event):
         for obj in self.collision_sprites:
@@ -152,8 +160,8 @@ class Game:
                 if self.key_down(event,"s") and self.player.inventory["crystal ball"] > 0:
                     self.player.inventory["crystal ball"] -= 1
                     self.player.inventory["coin"] += 3
-                if self.key_down(event, "b") and self.inventory["coin"] >= 3:
-                    self.player.inventory["coin"] -= 3
+                if self.key_down(event, "b") and self.inventory["coin"] >= 0:
+                    self.player.inventory["coin"] -= 1
                     self.player.inventory["potion"] += 1
                 if self.key_down(event, "n") and self.inventory["coin"] >= 5:
                     self.player.inventory["coin"] -= 3
@@ -225,6 +233,7 @@ class Game:
                 if event.type == self.custom_event:
                     self.monsters()
 
+            self.event_timer()
             self.display_surface.fill('black')
             self.all_sprites.update(dt)
             self.all_sprites.draw(self.player.rect.center)
@@ -232,7 +241,7 @@ class Game:
             self.display_captions()
             self.collision_detection()
             self.check_rune_collisions()
-            self.event_timer()
+            self.player_buffers()
 
             pygame.display.update()
 
