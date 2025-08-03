@@ -94,9 +94,9 @@ spawning_time =  {'world':0,'house':0,'forest':0,'cemetery':20000,
                   'dungeon' : 50000,'secret passage': 8000,'spawning area': 5000,'alchemist house' : 1000000,'frozen house' : 2000,
                   'maze' : 2500, 'abandoned house': 0}
 
-lasting_time = {'Rune': 10000 , 'scheleton': 30000, 'flame': 300000000,'dragon': 3000000,'ice': 5000,'bat_1': 50000,'bat': 10000}
+lasting_time = {'Rune': 100, 'scheleton': 30000, 'flame': 300000000,'dragon': 3000000,'ice': 5000,'bat_1': 50000,'bat': 10000}
 
-key_dict = {'1':[0,'potion',2], '2':[50,'holy water',1],'3':[0,'crystal ball',0]}
+key_dict = {'1':[0,'potion',2], '2':[50,'holy water',1],'3':[0,'crystal ball',0],'4':[0,'runes dust',10]}
 
 # ---------------------------
 # player flame images
