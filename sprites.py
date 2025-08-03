@@ -55,8 +55,8 @@ class NPC(pygame.sprite.Sprite,TimeUpdate):
 
         self.frames, self.frames_index = frames,0
         self.image = self.frames[self.frames_index]
-        self.animation_speed = 10
 
+        self.animation_speed = 10
         self.rect = self.image.get_rect(center = pos)
         self.pos = pygame.Vector2(pos)
         self.list = direction
@@ -96,5 +96,27 @@ class Rune(pygame.sprite.Sprite,TimeUpdate):
         TimeUpdate.update(self,dt,Rune.__name__)
 
 class Fire(pygame.sprite.Sprite,TimeUpdate):
-    pass
-####################PLACEHOLDER######################
+    def __init__(self, pos,frames,groups,speed,name='fire'):
+        super().__init__(groups)
+        self.frames, self.frames_index = frames, 0
+        self.image = self.frames[self.frames_index]
+        self.animation_speed = 10
+        self.rect = self.image.get_rect(center=pos)
+        self.pos = pygame.Vector2(pos)
+        self.spawn_time = pygame.time.get_ticks()
+        self.name = name
+        self.speed = speed
+        self.direction = 0,1
+
+    def animate(self, dt):
+            self.frames_index += self.animation_speed * dt
+            self.image = self.frames[int(self.frames_index) % len(self.frames)]
+
+    def move(self, dt):
+        self.pos += self.direction * self.speed * dt
+        self.rect.center = self.pos
+
+    def update(self, dt):
+        self.animate(dt)
+        self.move(dt)
+        TimeUpdate.update(self,dt,self.name)
