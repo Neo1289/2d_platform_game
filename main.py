@@ -4,13 +4,13 @@ from libraries_and_settings import (pygame,
                                     random)
 ###CONFIGURATIONS
 from libraries_and_settings import (display_surface, maps, TILE_SIZE, WINDOW_HEIGHT,WINDOW_WIDTH,
-                                    font,enemies_images,enemies_speed,enemies_direction,spawning_time,key_dict)
+                                    font,enemies_images,enemies_speed,enemies_direction,spawning_time,key_dict,player_flame_frames)
 from words_library import phrases
 
 ###SPRITES
 from player import Player
 from camera import allSpritesOffset
-from sprites import GeneralSprite,AreaSprite,NPC,Rune
+from sprites import GeneralSprite,AreaSprite,NPC,Rune,Fire
 
 pygame.init()
 
@@ -146,17 +146,21 @@ class Game:
                 self.effect = value[2]
 
     def player_buffers(self):
-                for obj in self.game_objects:
-                    if self.duration_time >= self.time_event and self.temporary_action == obj:
-                        self.player.life += self.effect
-                        if self.temporary_action == 'runes dust':
-                            position = (random.choice([100, -100, 50, -50, 200, -200, 0]) + self.player.rect.x,
+        enemies = [sprite for sprite in self.all_sprites if isinstance(sprite, NPC)]
+        for obj in self.game_objects:
+            if self.duration_time >= self.time_event and self.temporary_action == obj:
+                self.player.life += self.effect
+                if self.temporary_action == 'runes dust':
+                    position = (random.choice([100, -100, 50, -50, 200, -200, 0]) + self.player.rect.x,
                                         random.choice([100, -100, 50, -50, 200, -200, 0]) + self.player.rect.y)
-                            Rune(position, self.all_sprites)
-                        if self.temporary_action == 'crystal ball':
-                            pass####################################
-                ###############################################
-        ###########PLACEHOLDER#######################################
+                    Rune(position, self.all_sprites)
+                if self. temporary_action == 'crystal ball':
+                    for enemy in enemies:
+                        enemy.speed = 0
+
+    def player_fire(self,event):
+        if self.key_down(event,'z'):
+            Fire(self.player.rect.center,player_flame_frames,self.all_sprites,10)
 
     def trading(self,event):
         for obj in self.collision_sprites:
@@ -234,6 +238,7 @@ class Game:
                 self.collect_resources(event)
                 self.trading(event)
                 self.reset_timer(event)
+                self.player_fire(event)
                 if event.type == self.custom_event:
                     self.monsters()
 
