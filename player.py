@@ -35,9 +35,9 @@ class Player(pygame.sprite.Sprite):
         self.inventory = {
             'potion': 1,
             'crystal ball': 1,
-            'coin': 0,
+            'coin': 1,
             'keys': 0,
-            'holy water': 2,
+            'holy water': 1,
             'runes dust': 1,
             'nothing useful': 0
         }
@@ -123,14 +123,7 @@ class Player(pygame.sprite.Sprite):
         frames = self.frames[self.state]
         self.image = frames[int(self.frame_index) % len(frames)]
 
-    def attack(self):
-        keys = pygame.key.get_pressed()
-        if (keys[pygame.K_t]) and self.inventory['runes dust'] > 0:
-            self.inventory['runes dust'] -= 1
-            Rune(self.rect.center, self.groups)
-
     def update(self, dt):
-        self.attack()
         self._get_input()
         self._move(dt)
         self._animate(dt)

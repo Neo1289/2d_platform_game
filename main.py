@@ -149,10 +149,14 @@ class Game:
                 for obj in self.game_objects:
                     if self.duration_time >= self.time_event and self.temporary_action == obj:
                         self.player.life += self.effect
-                        if self.temporary_action == 'crystal ball':
+                        if self.temporary_action == 'runes dust':
                             position = (random.choice([100, -100, 50, -50, 200, -200, 0]) + self.player.rect.x,
                                         random.choice([100, -100, 50, -50, 200, -200, 0]) + self.player.rect.y)
                             Rune(position, self.all_sprites)
+                        if self.temporary_action == 'crystal ball':
+                            pass####################################
+                ###############################################
+        ###########PLACEHOLDER#######################################
 
     def trading(self,event):
         for obj in self.collision_sprites:

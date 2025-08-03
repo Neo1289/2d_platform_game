@@ -94,3 +94,7 @@ class Rune(pygame.sprite.Sprite,TimeUpdate):
 
     def update(self,dt):
         TimeUpdate.update(self,dt,Rune.__name__)
+
+class Fire(pygame.sprite.Sprite,TimeUpdate):
+    pass
+####################PLACEHOLDER######################
