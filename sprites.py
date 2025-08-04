@@ -96,7 +96,7 @@ class Rune(pygame.sprite.Sprite,TimeUpdate):
         TimeUpdate.update(self,dt,Rune.__name__)
 
 class Fire(pygame.sprite.Sprite,TimeUpdate):
-    def __init__(self, pos,frames,groups,speed,name='fire'):
+    def __init__(self, pos,frames,groups,speed,player_state:str,name='fire'):
         super().__init__(groups)
         self.frames, self.frames_index = frames, 0
         self.image = self.frames[self.frames_index]
@@ -106,7 +106,17 @@ class Fire(pygame.sprite.Sprite,TimeUpdate):
         self.spawn_time = pygame.time.get_ticks()
         self.name = name
         self.speed = speed
-        self.direction = 0,1
+        self.state = player_state
+
+        self.direction = pygame.Vector2()
+        if self.state == 'up':
+            self.direction = pygame.Vector2(0, -5)
+        elif self.state == 'down':
+            self.direction = pygame.Vector2(0, 5)
+        elif self.state == 'left':
+            self.direction = pygame.Vector2(-5, 0)
+        elif self.state == 'right':
+            self.direction = pygame.Vector2(5, 0)
 
     def animate(self, dt):
             self.frames_index += self.animation_speed * dt

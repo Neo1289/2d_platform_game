@@ -41,8 +41,8 @@ class Game:
 
         self.spawning_time = spawning_time
 
-        self.game_objects = ['potion','crystal ball','coin','runes dust','nothing useful','holy water']
-        self.weights = [0.4,0.1,0.49,0.01,1,0.00001]
+        self.game_objects = ['potion','crystal ball','coin','runes dust','nothing useful','holy water','fire dust']
+        self.weights = [0.4,0.1,0.49,0.01,1,0.00001,0.3]
         self.last_item = ''
 
         self.custom_event = pygame.event.custom_type()
@@ -159,8 +159,9 @@ class Game:
                         enemy.speed = 0
 
     def player_fire(self,event):
-        if self.key_down(event,'z'):
-            Fire(self.player.rect.center,player_flame_frames,self.all_sprites,10)
+        if self.key_down(event,'z') and self.player.inventory['fire dust'] > 0:
+            Fire(self.player.rect.center,player_flame_frames,self.all_sprites,10,self.player.state)
+            self.player.inventory['fire dust'] -= 1
 
     def trading(self,event):
         for obj in self.collision_sprites:
@@ -188,10 +189,13 @@ class Game:
 
     def check_rune_collisions(self):
         enemies = [sprite for sprite in self.all_sprites if isinstance(sprite, NPC)]
-        rune_group = pygame.sprite.Group([sprite for sprite in self.all_sprites if isinstance(sprite, (Rune))])
+        projectiles = pygame.sprite.Group([
+            sprite for sprite in self.all_sprites
+            if isinstance(sprite, (Rune, Fire))
+        ])
+
         for enemy in enemies:
-            rune_hits = pygame.sprite.spritecollide(enemy,rune_group, False)
-            if rune_hits:
+            if pygame.sprite.spritecollideany(enemy, projectiles):
                 enemy.kill()
 
     def display_captions(self):
@@ -203,6 +207,8 @@ class Game:
                         f"\U0001F5DD {self.player.inventory['keys']}     "
                         f"\u2697\ufe0f {self.player.inventory['holy water']}     "
                         f"\U0001F4AB {self.player.inventory['runes dust']}     "
+                        f"\U0001F525{self.player.inventory['fire dust']}     "
+                        
                         f"timer: {time_sec}          "
                         f"last item found: {self.last_item}     "
                         )
