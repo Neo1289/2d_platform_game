@@ -50,7 +50,7 @@ class AreaSprite(pygame.sprite.Sprite):
 
 #######################
 class NPC(pygame.sprite.Sprite,TimeUpdate):
-    def __init__(self,pos,frames,groups,name: str,speed: int,dangerous: bool, direction: list = None, follow_player: bool = False):
+    def __init__(self,pos,frames,groups,name: str,speed: int,dangerous: bool,life:int, direction: list = None, follow_player: bool = False):
         super().__init__(groups)
 
         self.frames, self.frames_index = frames,0
@@ -67,6 +67,7 @@ class NPC(pygame.sprite.Sprite,TimeUpdate):
         self.follow_player = follow_player
         self.player = None
         self.spawn_time = pygame.time.get_ticks()
+        self.life = life
 
     def animate(self, dt):
             self.frames_index += self.animation_speed * dt
