@@ -4,7 +4,7 @@ from libraries_and_settings import (pygame,
                                     random)
 ###CONFIGURATIONS
 from libraries_and_settings import (display_surface, maps, TILE_SIZE, WINDOW_HEIGHT,WINDOW_WIDTH,
-                                    font,enemies_images,enemies_speed,enemies_direction,spawning_time,key_dict,player_flame_frames)
+                                    font,enemies_images,enemies_speed,enemies_direction,spawning_time,key_dict,player_flame_frames,enemies_life)
 from words_library import phrases
 
 ###SPRITES
@@ -24,6 +24,7 @@ class Game:
         self.duration_time = 0
         self.temporary_action = None
         self.key_dict = key_dict
+        self.last_time_guard = 0
 
         self.maps = maps
         self.current_map = None
@@ -34,6 +35,7 @@ class Game:
         self.enemies_images = enemies_images
         self.enemies_direction = enemies_direction
         self.enemies_list = list(self.enemies_images.keys())
+        self.enemies_life = enemies_life
 
         self.collision_sprites = pygame.sprite.Group()
         self.all_sprites = allSpritesOffset()
@@ -80,7 +82,7 @@ class Game:
         for obj in self.current_map.get_layer_by_name('areas'):
             if obj.name in  self.enemies_list:
                 self.monster = NPC((obj.x, obj.y), self.enemies_images[obj.name], self.all_sprites, obj.name,
-                                   enemies_speed[obj.name], True, self.enemies_direction[obj.name],
+                                   enemies_speed[obj.name], True,self.enemies_life[obj.name], self.enemies_direction[obj.name],
                                    follow_player=obj.name in ['scheleton', 'dragon','bat_1'])
                 self.monster.player = self.player
 
@@ -135,6 +137,10 @@ class Game:
     def event_timer(self):
         self.time_event = (pygame.time.get_ticks() - self.start_time) // 1000
 
+        if self.preventing_repetition() and self.player.inventory['fire dust'] < 50:
+            self.player.inventory['fire dust'] += 1
+            self.last_time_guard = self.time_event
+
     def reset_timer(self, event):
         for key,value in self.key_dict.items():
             #####value[time,action name,effect]
@@ -146,7 +152,7 @@ class Game:
                 self.effect = value[2]
 
     def player_buffers(self):
-        enemies = [sprite for sprite in self.all_sprites if isinstance(sprite, NPC)]
+        enemies = self.enemies_groups()
         for obj in self.game_objects:
             if self.duration_time >= self.time_event and self.temporary_action == obj:
                 self.player.life += self.effect
@@ -162,6 +168,7 @@ class Game:
         if self.key_down(event,'z') and self.player.inventory['fire dust'] > 0:
             Fire(self.player.rect.center,player_flame_frames,self.all_sprites,10,self.player.state)
             self.player.inventory['fire dust'] -= 1
+
 
     def trading(self,event):
         for obj in self.collision_sprites:
@@ -187,8 +194,8 @@ class Game:
             pygame.quit()
             sys.exit()
 
-    def check_rune_collisions(self):
-        enemies = [sprite for sprite in self.all_sprites if isinstance(sprite, NPC)]
+    def check_enemies_collision(self):
+        enemies = self.enemies_groups()
         projectiles = pygame.sprite.Group([
             sprite for sprite in self.all_sprites
             if isinstance(sprite, (Rune, Fire))
@@ -196,6 +203,8 @@ class Game:
 
         for enemy in enemies:
             if pygame.sprite.spritecollideany(enemy, projectiles):
+                enemy.life -= 1
+            if enemy.life == 0:
                 enemy.kill()
 
     def display_captions(self):
@@ -232,6 +241,12 @@ class Game:
             self.key_event = pygame.key.name(event.key)
         return event.type == pygame.KEYDOWN and event.key == getattr(pygame, f"K_{key}")
 
+    def enemies_groups(self):
+        return [sprite for sprite in self.all_sprites if isinstance(sprite, NPC)]
+
+    def preventing_repetition(self):
+        return  self.time_event % 10 == 0 and self.time_event != self.last_time_guard
+
     def run(self):
         while self.running:
             dt = self.clock.tick(60) / 1000
@@ -255,7 +270,7 @@ class Game:
             self.rendering()
             self.display_captions()
             self.collision_detection()
-            self.check_rune_collisions()
+            self.check_enemies_collision()
             self.player_buffers()
 
             pygame.display.update()
