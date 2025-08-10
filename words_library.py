@@ -85,3 +85,22 @@ areas_description = {
     "safe" : ""
 
 }
+
+instructions = [
+            "Movement: Arrow Keys",
+            "Enter Area/Interact: Y",
+            "Shoot Fire: Z (costs fire dust)",
+            "Trade with Merchants:",
+            "   - Press S: Trade crystal ball for 3 coins",
+            "   - Press B: Trade 1 coin for potion",
+            "   - Press N: Trade 3 coins for holy water",
+            "",
+            "Items:",
+            "   - Potion: Restores health",
+            "   - Crystal Ball: Freezes enemies",
+            "   - Runes Dust: Creates magical runes",
+            "   - Fire Dust: Needed for fire attacks",
+            "   - Holy Water: Special protection",
+            "",
+            "Press SPACE to start your adventure!"
+        ]
