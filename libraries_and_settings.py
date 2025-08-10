@@ -84,17 +84,28 @@ for file_name in listdir(dragon_folder):
     dragon.append(surf)
 
 # ---------------------------
+# fish images
+# ---------------------------
+
+fish = []
+fish_folder = path.join('resources', 'fish')
+for file_name in listdir(fish_folder):
+    full_path = path.join(fish_folder, file_name)
+    surf = pygame.image.load(full_path).convert_alpha()
+    fish.append(surf)
+
+# ---------------------------
 # enemies dictionary images
 # ---------------------------
-enemies_life = {"dragon":500,"scheleton": 10,"bat":10,"ice":1000,"flame":1000,"bat_1":10}
-enemies_images = {"dragon":dragon,"bat":bat,"scheleton":scheleton,"flame":flame,"ice":ice,"bat_1":bat}
-enemies_speed = {"dragon":110,"bat":80,"scheleton":30,"flame":0,"ice":100,"bat_1":80}
-enemies_direction = {"dragon": [-1,1] ,"bat":[-1,1] ,"scheleton":[-1,1] ,"flame":[-1,1],"ice":[-1,1],"bat_1":[-1,1]}
-spawning_time =  {'world':0,'house':0,'forest':0,'cemetery':20000,
+enemies_life = {"dragon":500,"scheleton": 10,"bat":10,"ice":1000,"flame":1000,"bat_1":10,"fish":20}
+enemies_images = {"dragon":dragon,"bat":bat,"scheleton":scheleton,"flame":flame,"ice":ice,"bat_1":bat,"fish":fish}
+enemies_speed = {"dragon":110,"bat":80,"scheleton":30,"flame":0,"ice":100,"bat_1":80,"fish":20}
+enemies_direction = {"dragon": [-1,1] ,"bat":[-1,1] ,"scheleton":[-1,1] ,"flame":[-1,1],"ice":[-1,1],"bat_1":[-1,1],"fish":[-1,1]}
+spawning_time =  {'world':20000,'house':0,'forest':0,'cemetery':20000,
                   'dungeon' : 50000,'secret passage': 8000,'spawning area': 5000,'alchemist house' : 1000000,'frozen house' : 2000,
                   'maze' : 2500, 'abandoned house': 0}
 
-lasting_time = {'Rune': 1000, 'scheleton': 30000, 'flame': 300000000,'dragon': 3000000,'ice': 5000,'bat_1': 50000,'bat': 10000,'fire':1000}
+lasting_time = {'Rune': 1000, 'scheleton': 30000, 'flame': 300000000,'dragon': 3000000,'ice': 5000,'bat_1': 50000,'bat': 10000,'fire':1000,'fish':1000}
 
 key_dict = {'1':[0,'potion',2], '3':[50,'holy water',1],'2':[1,'crystal ball',0],'4':[1,'runes dust',0]}
 

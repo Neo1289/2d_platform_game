@@ -96,11 +96,11 @@ instructions = [
             "   - Press N: Trade 3 coins for holy water",
             "",
             "Items:",
-            "   - Potion: Restores health",
-            "   - Crystal Ball: Freezes enemies",
-            "   - Runes Dust: Creates magical runes",
+            "   - Potion: Restores health - press 1 to use",
+            "   - Crystal Ball: Freezes enemies - press 2 to use",
+            "   - Runes Dust: Creates magical runes - press 4 to use",
             "   - Fire Dust: Needed for fire attacks",
-            "   - Holy Water: Special protection",
+            "   - Holy Water: Special protection - press 3 to use",
             "",
             "Press SPACE to start your adventure!"
         ]
