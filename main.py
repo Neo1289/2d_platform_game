@@ -50,19 +50,17 @@ class Game:
         self.custom_event = pygame.event.custom_type()
 
         # Game state management
-        self.game_state = "intro"  # Can be "intro" or "gameplay"
+        self.game_state = "intro"
         self.instructions = instructions
 
     def show_introduction_screen(self):
         self.display_surface.fill('black')
 
-        # Add title
         title_font = font
         title_surf = title_font.render("Game Instructions", True, "white")
         title_rect = title_surf.get_rect(center=(WINDOW_WIDTH // 2, 80))
         self.display_surface.blit(title_surf, title_rect)
 
-        # Show instructions
         instruction_y = 160
         instruction_font = font
         for line in self.instructions:
@@ -71,7 +69,6 @@ class Game:
             self.display_surface.blit(text_surf, text_rect)
             instruction_y += 30
 
-        # Show navigation instructions at the bottom
         help_text = "Press SPACE to play game | Press H anytime during gameplay to return to this screen"
         help_surf = instruction_font.render(help_text, True, (255, 255, 100))
         help_rect = help_surf.get_rect(center=(WINDOW_WIDTH // 2, WINDOW_HEIGHT - 50))
@@ -79,7 +76,6 @@ class Game:
 
         pygame.display.update()
 
-        # Wait for player to press space to continue
         waiting = True
         while waiting and self.running:
             self.clock.tick(60)
@@ -217,7 +213,6 @@ class Game:
             Fire(self.player.rect.center,player_flame_frames,self.all_sprites,10,self.player.state)
             self.player.inventory['fire dust'] -= 1
 
-
     def trading(self,event):
         for obj in self.collision_sprites:
             if self.human_id(obj):
@@ -248,12 +243,19 @@ class Game:
             sprite for sprite in self.all_sprites
             if isinstance(sprite, (Rune, Fire))
         ])
-
+        self.fishes = 0
         for enemy in enemies:
             if pygame.sprite.spritecollideany(enemy, projectiles):
                 enemy.life -= 1
             if enemy.life == 0:
                 enemy.kill()
+                if enemy.name =='fish':
+                    self.player.inventory['keys'] += 1
+        for sprite in self.all_sprites: #controlling fished population
+            if isinstance(sprite, NPC) and sprite.name == 'fish':
+                self.fishes += 1
+            if self.fishes > 1:
+                self.all_sprites.remove(sprite)
 
     def display_captions(self):
         time_sec = pygame.time.get_ticks() // 1000
@@ -265,7 +267,6 @@ class Game:
                         f"\u2697\ufe0f {self.player.inventory['holy water']}     "
                         f"\U0001F4AB {self.player.inventory['runes dust']}     "
                         f"\U0001F525{self.player.inventory['fire dust']}     "
-                        
                         f"timer: {time_sec}          "
                         f"last item found: {self.last_item}     "
                         )
@@ -301,12 +302,10 @@ class Game:
                 self.running = False
                 sys.exit()
 
-            # Check for H key to show introduction screen from gameplay
             if event.type == pygame.KEYDOWN and event.key == pygame.K_h and self.game_state == "gameplay":
                 self.game_state = "intro"
-                return True  # Signal that we're changing state
+                return True
 
-            # Process gameplay events only when in gameplay state
             if self.game_state == "gameplay":
                 self.enter_area_check(event)
                 self.collect_resources(event)
@@ -316,10 +315,9 @@ class Game:
                 if event.type == self.custom_event:
                     self.monsters()
 
-        return False  # No state change
+        return False
 
     def run(self):
-        # Initialize the game map if not initialized yet
         if not self.current_map:
             self.mapping()
             pygame.time.set_timer(self.custom_event, self.spawning_time[self.current_area])
@@ -327,16 +325,13 @@ class Game:
         while self.running:
             dt = self.clock.tick(60) / 1000
 
-            # Handle different game states
             if self.game_state == "intro":
                 self.show_introduction_screen()
             elif self.game_state == "gameplay":
-                # Process events first to check for state changes
                 state_changed = self.handle_events()
                 if state_changed:
-                    continue  # Skip the rest of the loop if state changed
+                    continue
 
-                # Regular gameplay update
                 self.event_timer()
                 self.display_surface.fill('black')
                 self.all_sprites.update(dt)
