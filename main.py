@@ -5,7 +5,7 @@ from libraries_and_settings import (pygame,
 ###CONFIGURATIONS
 from libraries_and_settings import (display_surface, maps, TILE_SIZE, WINDOW_HEIGHT,WINDOW_WIDTH,
                                     font,enemies_images,enemies_speed,enemies_direction,spawning_time,key_dict,player_flame_frames,enemies_life)
-from words_library import phrases
+from words_library import phrases,instructions
 
 ###SPRITES
 from player import Player
@@ -48,6 +48,54 @@ class Game:
         self.last_item = ''
 
         self.custom_event = pygame.event.custom_type()
+
+        # Game state management
+        self.game_state = "intro"  # Can be "intro" or "gameplay"
+        self.instructions = instructions
+
+    def show_introduction_screen(self):
+        self.display_surface.fill('black')
+
+        # Add title
+        title_font = font
+        title_surf = title_font.render("Game Instructions", True, "white")
+        title_rect = title_surf.get_rect(center=(WINDOW_WIDTH // 2, 80))
+        self.display_surface.blit(title_surf, title_rect)
+
+        # Show instructions
+        instruction_y = 160
+        instruction_font = font
+        for line in self.instructions:
+            text_surf = instruction_font.render(line, True, "white")
+            text_rect = text_surf.get_rect(midleft=(WINDOW_WIDTH // 4, instruction_y))
+            self.display_surface.blit(text_surf, text_rect)
+            instruction_y += 30
+
+        # Show navigation instructions at the bottom
+        help_text = "Press SPACE to play game | Press H anytime during gameplay to return to this screen"
+        help_surf = instruction_font.render(help_text, True, (255, 255, 100))
+        help_rect = help_surf.get_rect(center=(WINDOW_WIDTH // 2, WINDOW_HEIGHT - 50))
+        self.display_surface.blit(help_surf, help_rect)
+
+        pygame.display.update()
+
+        # Wait for player to press space to continue
+        waiting = True
+        while waiting and self.running:
+            self.clock.tick(60)
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self.running = False
+                    pygame.quit()
+                    sys.exit()
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_SPACE:
+                        self.game_state = "gameplay"
+                        waiting = False
+                    elif event.key == pygame.K_ESCAPE:
+                        self.running = False
+                        pygame.quit()
+                        sys.exit()
 
     def mapping(self):
 
@@ -160,7 +208,7 @@ class Game:
                     position = (random.choice([100, -100, 50, -50, 200, -200, 0]) + self.player.rect.x,
                                         random.choice([100, -100, 50, -50, 200, -200, 0]) + self.player.rect.y)
                     Rune(position, self.all_sprites)
-                if self. temporary_action == 'crystal ball':
+                if self.temporary_action == 'crystal ball':
                     for enemy in enemies:
                         enemy.speed = 0
 
@@ -247,14 +295,19 @@ class Game:
     def preventing_repetition(self):
         return  self.time_event % 10 == 0 and self.time_event != self.last_time_guard
 
-    def run(self):
-        while self.running:
-            dt = self.clock.tick(60) / 1000
+    def handle_events(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                self.running = False
+                sys.exit()
 
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    self.running = False
-                    sys.exit()
+            # Check for H key to show introduction screen from gameplay
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_h and self.game_state == "gameplay":
+                self.game_state = "intro"
+                return True  # Signal that we're changing state
+
+            # Process gameplay events only when in gameplay state
+            if self.game_state == "gameplay":
                 self.enter_area_check(event)
                 self.collect_resources(event)
                 self.trading(event)
@@ -263,17 +316,38 @@ class Game:
                 if event.type == self.custom_event:
                     self.monsters()
 
-            self.event_timer()
-            self.display_surface.fill('black')
-            self.all_sprites.update(dt)
-            self.all_sprites.draw(self.player.rect.center)
-            self.rendering()
-            self.display_captions()
-            self.collision_detection()
-            self.check_enemies_collision()
-            self.player_buffers()
+        return False  # No state change
 
-            pygame.display.update()
+    def run(self):
+        # Initialize the game map if not initialized yet
+        if not self.current_map:
+            self.mapping()
+            pygame.time.set_timer(self.custom_event, self.spawning_time[self.current_area])
+
+        while self.running:
+            dt = self.clock.tick(60) / 1000
+
+            # Handle different game states
+            if self.game_state == "intro":
+                self.show_introduction_screen()
+            elif self.game_state == "gameplay":
+                # Process events first to check for state changes
+                state_changed = self.handle_events()
+                if state_changed:
+                    continue  # Skip the rest of the loop if state changed
+
+                # Regular gameplay update
+                self.event_timer()
+                self.display_surface.fill('black')
+                self.all_sprites.update(dt)
+                self.all_sprites.draw(self.player.rect.center)
+                self.rendering()
+                self.display_captions()
+                self.collision_detection()
+                self.check_enemies_collision()
+                self.player_buffers()
+
+                pygame.display.update()
 
         pygame.quit()
 
