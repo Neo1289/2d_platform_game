@@ -49,50 +49,6 @@ class Game:
 
         self.custom_event = pygame.event.custom_type()
 
-        # Game state management
-        self.game_state = "intro"
-        self.instructions = instructions
-
-    def show_introduction_screen(self):
-        self.display_surface.fill('black')
-
-        title_font = font
-        title_surf = title_font.render("Game Instructions", True, "white")
-        title_rect = title_surf.get_rect(center=(WINDOW_WIDTH // 2, 80))
-        self.display_surface.blit(title_surf, title_rect)
-
-        instruction_y = 160
-        instruction_font = font
-        for line in self.instructions:
-            text_surf = instruction_font.render(line, True, "white")
-            text_rect = text_surf.get_rect(midleft=(WINDOW_WIDTH // 4, instruction_y))
-            self.display_surface.blit(text_surf, text_rect)
-            instruction_y += 30
-
-        help_text = "Press SPACE to play game | Press H anytime during gameplay to return to this screen"
-        help_surf = instruction_font.render(help_text, True, (255, 255, 100))
-        help_rect = help_surf.get_rect(center=(WINDOW_WIDTH // 2, WINDOW_HEIGHT - 50))
-        self.display_surface.blit(help_surf, help_rect)
-
-        pygame.display.update()
-
-        waiting = True
-        while waiting and self.running:
-            self.clock.tick(60)
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    self.running = False
-                    pygame.quit()
-                    sys.exit()
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_SPACE:
-                        self.game_state = "gameplay"
-                        waiting = False
-                    elif event.key == pygame.K_ESCAPE:
-                        self.running = False
-                        pygame.quit()
-                        sys.exit()
-
     def mapping(self):
 
         self.all_sprites.empty()
@@ -117,7 +73,7 @@ class Game:
                     self.player.collision_rect.center = (obj.x, obj.y)
                     self.all_sprites.add(self.player)
 
-            elif obj.name not in self.enemies_list:
+            elif obj.name not in self.enemies_list and obj.name is not None:
                 self.area_group[obj.name] = AreaSprite(obj.x, obj.y, obj.width, obj.height, self.all_sprites,obj.name)
             else:
                 self.monsters()
@@ -127,7 +83,7 @@ class Game:
             if obj.name in  self.enemies_list:
                 self.monster = NPC((obj.x, obj.y), self.enemies_images[obj.name], self.all_sprites, obj.name,
                                    enemies_speed[obj.name], True,self.enemies_life[obj.name], self.enemies_direction[obj.name],
-                                   follow_player=obj.name in ['scheleton', 'dragon','bat_1'])
+                                   follow_player=obj.name in ['scheleton', 'dragon','bat_1','flame_1'])
                 self.monster.player = self.player
 
     def enter_area_check(self,event):
@@ -149,7 +105,7 @@ class Game:
             if area.rect.colliderect(self.player.rect):
                     if name not in ('danger area','recall'):
                         self.current_area = name
-                        self.text = f"You found a {name} press Y to enter"
+                        self.text = f"{self.phrases['text_8']}{name}"
                         self.text_surface = font.render(self.text,True,"white")
 
         for obj in self.collision_sprites:
@@ -210,7 +166,7 @@ class Game:
 
     def player_fire(self,event):
         if self.key_down(event,'z') and self.player.inventory['fire dust'] > 0:
-            Fire(self.player.rect.center,player_flame_frames,self.all_sprites,10,self.player.state)
+            Fire(self.player.rect.center,player_flame_frames,self.all_sprites,30,self.player.state)
             self.player.inventory['fire dust'] -= 1
 
     def trading(self,event):
@@ -251,6 +207,7 @@ class Game:
                 enemy.kill()
                 if enemy.name =='fish':
                     self.player.inventory['keys'] += 1
+                    print('killed a fish')
         for sprite in self.all_sprites: #controlling fished population
             if isinstance(sprite, NPC) and sprite.name == 'fish':
                 self.fishes += 1
@@ -296,17 +253,16 @@ class Game:
     def preventing_repetition(self):
         return  self.time_event % 10 == 0 and self.time_event != self.last_time_guard
 
-    def handle_events(self):
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                self.running = False
-                sys.exit()
 
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_h and self.game_state == "gameplay":
-                self.game_state = "intro"
-                return True
+    def run(self):
 
-            if self.game_state == "gameplay":
+        while self.running:
+            dt = self.clock.tick(60) / 1000
+
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self.running = False
+                    sys.exit()
                 self.enter_area_check(event)
                 self.collect_resources(event)
                 self.trading(event)
@@ -315,37 +271,21 @@ class Game:
                 if event.type == self.custom_event:
                     self.monsters()
 
-        return False
+            self.event_timer()
+            self.display_surface.fill('black')
+            self.all_sprites.update(dt)
+            self.all_sprites.draw(self.player.rect.center)
+            self.rendering()
+            self.display_captions()
+            self.collision_detection()
+            self.check_enemies_collision()
+            self.player_buffers()
 
-    def run(self):
-        if not self.current_map:
-            self.mapping()
-            pygame.time.set_timer(self.custom_event, self.spawning_time[self.current_area])
-
-        while self.running:
-            dt = self.clock.tick(60) / 1000
-
-            if self.game_state == "intro":
-                self.show_introduction_screen()
-            elif self.game_state == "gameplay":
-                state_changed = self.handle_events()
-                if state_changed:
-                    continue
-
-                self.event_timer()
-                self.display_surface.fill('black')
-                self.all_sprites.update(dt)
-                self.all_sprites.draw(self.player.rect.center)
-                self.rendering()
-                self.display_captions()
-                self.collision_detection()
-                self.check_enemies_collision()
-                self.player_buffers()
-
-                pygame.display.update()
+            pygame.display.update()
 
         pygame.quit()
 
 if __name__ == '__main__':
     main_game = Game()
     main_game.run()
+    main_game.mapping()
