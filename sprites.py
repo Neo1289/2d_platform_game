@@ -101,7 +101,7 @@ class Fire(pygame.sprite.Sprite,TimeUpdate):
         super().__init__(groups)
         self.frames, self.frames_index = frames, 0
         self.image = self.frames[self.frames_index]
-        self.animation_speed = 10
+        self.animation_speed = 20
         self.rect = self.image.get_rect(center=pos)
         self.pos = pygame.Vector2(pos)
         self.spawn_time = pygame.time.get_ticks()
