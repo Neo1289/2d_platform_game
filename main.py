@@ -79,12 +79,25 @@ class Game:
                 self.monsters()
 
     def monsters(self):
-        for obj in self.current_map.get_layer_by_name('areas'):
-            if obj.name in  self.enemies_list:
-                self.monster = NPC((obj.x, obj.y), self.enemies_images[obj.name], self.all_sprites, obj.name,
-                                   enemies_speed[obj.name], True,self.enemies_life[obj.name], self.enemies_direction[obj.name],
-                                   follow_player=obj.name in ['scheleton', 'dragon','bat_1','flame_1'])
+        if self.current_area == 'river':
+            # Special handling for fish - spawn only one random fish
+            fish_areas = [obj for obj in self.current_map.get_layer_by_name('areas')
+                          if obj.name == 'fish']
+            if fish_areas:
+                spawn_area = random.choice(fish_areas)
+                self.monster = NPC((spawn_area.x, spawn_area.y), self.enemies_images['fish'],
+                                   self.all_sprites, 'fish', enemies_speed['fish'], True,
+                                   self.enemies_life['fish'], self.enemies_direction['fish'])
                 self.monster.player = self.player
+        else:
+            # Original logic for other enemies
+            for obj in self.current_map.get_layer_by_name('areas'):
+                if obj.name in self.enemies_list:
+                    self.monster = NPC((obj.x, obj.y), self.enemies_images[obj.name],
+                                       self.all_sprites, obj.name, enemies_speed[obj.name],
+                                       True, self.enemies_life[obj.name], self.enemies_direction[obj.name],
+                                       follow_player=obj.name in ['scheleton', 'dragon', 'bat_1', 'flame_1'])
+                    self.monster.player = self.player
 
     def enter_area_check(self,event):
         for name, area in self.area_group.items():
