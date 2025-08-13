@@ -220,7 +220,11 @@ class Game:
                 enemy.kill()
                 if enemy.name =='fish':
                     self.player.inventory['keys'] += 1
-                    print('killed a fish')
+                if enemy.name == 'dragon':
+                    self.player.inventory['coin'] += 20
+                    self.player.inventory['keys'] += 2
+                    self.player.inventory['crystal ball'] += 2
+
         for sprite in self.all_sprites: #controlling fished population
             if isinstance(sprite, NPC) and sprite.name == 'fish':
                 self.fishes += 1
