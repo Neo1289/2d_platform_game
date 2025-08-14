@@ -1,6 +1,4 @@
 from libraries_and_settings import pygame, walk, path, join
-from sprites import Rune
-
 
 class Player(pygame.sprite.Sprite):
     # Class constants

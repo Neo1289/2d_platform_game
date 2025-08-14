@@ -102,7 +102,7 @@ enemies_images = {"dragon":dragon,"bat":bat,"scheleton":scheleton,"flame":flame,
 enemies_speed = {"dragon":110,"bat":80,"scheleton":30,"flame":0,"ice":100,"bat_1":80,"fish":5,"flame_1":10}
 enemies_direction = {"dragon": [-1,1] ,"bat":[-1,1] ,"scheleton":[-1,1] ,"flame":[-1,1],"ice":[-1,1],"bat_1":[-1,1],"fish":[-1,1],"flame_1":[-1,1]}
 spawning_time =  {'world':20000,'house':0,'forest':0,'cemetery':5000,
-                  'dungeon' : 50000, 'maze' : 2500, 'abandoned house': 5000,'river':2000}
+                  'dungeon' : 0, 'maze' : 2500, 'abandoned house': 5000,'river':2000}
 
 lasting_time = {'Rune': 1000, 'scheleton': 30000, 'flame': 300000000,'dragon': 3000000,'ice': 5000,'bat_1': 50000,'bat': 10000,'fire':1000,'fish':1000,"flame_1":100000}
 
@@ -120,4 +120,14 @@ for file_name in listdir(player_flame_folder):
     surf.set_colorkey((31, 16, 42))
     player_flame_frames.append(surf)
 
+# ---------------------------
+# dragon flame images
+# ---------------------------
 
+fire_frames = []
+fire_flame_folder = path.join('resources', 'dragon_flame')
+for file_name in listdir(fire_flame_folder):
+    full_path = path.join(fire_flame_folder, file_name)
+    surf = pygame.image.load(full_path).convert()
+    surf.set_colorkey((31, 16, 42))
+    fire_frames.append(surf)
