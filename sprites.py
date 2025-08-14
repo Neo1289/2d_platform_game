@@ -1,4 +1,4 @@
-from libraries_and_settings import pygame,random,path,lasting_time
+from libraries_and_settings import pygame,random,path,lasting_time,fire_frames
 
 
 class TimeUpdate:
@@ -7,6 +7,21 @@ class TimeUpdate:
         self.lasting_time = lasting_time
         if hasattr(self, 'spawn_time') and (current_time - self.spawn_time) >= self.lasting_time[name]:
             self.kill()
+
+
+class ShootFire:
+    def __init__(self, fire_frames, group):
+        self.fire_frames = fire_frames
+        self.all_sprites = group
+        self.last_shot = 0
+        self.shoot_interval = 3000
+
+    def update(self, npc_rect):
+        current_time = pygame.time.get_ticks()
+        if current_time - self.last_shot >= self.shoot_interval:
+            fire_pos = (npc_rect.centerx + npc_rect.width // 2, npc_rect.centery)
+            Fire(fire_pos, self.fire_frames, self.all_sprites, 90, 'right', 'fire')
+            self.last_shot = current_time
 
 class GeneralSprite(pygame.sprite.Sprite):
     def __init__(self, pos, surf, groups, ground_att: bool, name: str= None, resources: int= 0, item: bool= None):
@@ -68,6 +83,10 @@ class NPC(pygame.sprite.Sprite,TimeUpdate):
         self.player = None
         self.spawn_time = pygame.time.get_ticks()
         self.life = life
+        if name == 'dragon' and fire_frames:
+            self.shooter = ShootFire(fire_frames, groups)
+        else:
+            self.shooter = None
 
     def animate(self, dt):
             self.frames_index += self.animation_speed * dt
@@ -84,6 +103,8 @@ class NPC(pygame.sprite.Sprite,TimeUpdate):
     def update(self, dt):
         self.animate(dt)
         self.move(dt)
+        if self.shooter:
+            self.shooter.update(self.rect)
         TimeUpdate.update(self,dt,self.name)
 
 class Rune(pygame.sprite.Sprite,TimeUpdate):
