@@ -270,6 +270,43 @@ class Game:
     def preventing_repetition(self):
         return  self.time_event % 10 == 0 and self.time_event != self.last_time_guard
 
+    def main_menu(self):
+        menu_running = True
+        while menu_running:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self.running = False
+                    return
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        menu_running = False
+                    elif event.key == pygame.K_q:
+                        self.running = False
+                        return
+
+            self.display_surface.fill('black')
+
+            # Menu text
+            title = font.render("GAME MENU", True, "white")
+            inventory_text = font.render(f"Inventory: {self.player.inventory}", True, "white")
+            health_text = font.render(f"Health: {self.player.life}", True, "white")
+            area_text = font.render(f"Current Area: {self.current_area}", True, "white")
+            controls = font.render("ESC - Resume | Q - Quit", True, "white")
+
+            # Center the text
+            title_rect = title.get_rect(center=(WINDOW_WIDTH // 2, 100))
+            inventory_rect = inventory_text.get_rect(center=(WINDOW_WIDTH // 2, 200))
+            health_rect = health_text.get_rect(center=(WINDOW_WIDTH // 2, 250))
+            area_rect = area_text.get_rect(center=(WINDOW_WIDTH // 2, 300))
+            controls_rect = controls.get_rect(center=(WINDOW_WIDTH // 2, 400))
+
+            self.display_surface.blit(title, title_rect)
+            self.display_surface.blit(inventory_text, inventory_rect)
+            self.display_surface.blit(health_text, health_rect)
+            self.display_surface.blit(area_text, area_rect)
+            self.display_surface.blit(controls, controls_rect)
+
+            pygame.display.update()
 
     def run(self):
 
@@ -287,6 +324,9 @@ class Game:
                 self.player_fire(event)
                 if event.type == self.custom_event:
                     self.monsters()
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_m:
+                    self.main_menu()
+                    continue
 
             self.event_timer()
             self.display_surface.fill('black')
