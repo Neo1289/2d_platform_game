@@ -5,7 +5,7 @@ from libraries_and_settings import (pygame,
 ###CONFIGURATIONS
 from libraries_and_settings import (display_surface, maps, TILE_SIZE, WINDOW_HEIGHT,WINDOW_WIDTH,
                                     font,enemies_images,enemies_speed,enemies_direction,spawning_time,key_dict,player_flame_frames,enemies_life)
-from words_library import phrases,instructions
+from words_library import phrases,instructions,trade,items
 
 ###SPRITES
 from player import Player
@@ -36,6 +36,9 @@ class Game:
         self.enemies_direction = enemies_direction
         self.enemies_list = list(self.enemies_images.keys())
         self.enemies_life = enemies_life
+        self.instructions = instructions
+        self.trade = trade
+        self.items = items
 
         self.collision_sprites = pygame.sprite.Group()
         self.all_sprites = allSpritesOffset()
@@ -79,26 +82,23 @@ class Game:
                 self.monsters()
 
     def monsters(self):
-        if self.current_area == 'river':
-            # Special handling for fish - spawn only one random fish
-            fish_areas = [obj for obj in self.current_map.get_layer_by_name('areas')
-                          if obj.name == 'fish']
-            if fish_areas:
-                spawn_area = random.choice(fish_areas)
-                self.monster = NPC((spawn_area.x, spawn_area.y), self.enemies_images['fish'],
-                                   self.all_sprites, 'fish', enemies_speed['fish'], True,
-                                   self.enemies_life['fish'], self.enemies_direction['fish'])
-                self.monster.player = self.player
-        else:
-            # Original logic for other enemies
-            for obj in self.current_map.get_layer_by_name('areas'):
-                if obj.name in self.enemies_list:
-                    self.monster = NPC((obj.x, obj.y), self.enemies_images[obj.name],
-                                       self.all_sprites, obj.name, enemies_speed[obj.name],
-                                       True, self.enemies_life[obj.name], self.enemies_direction[obj.name],
-                                       follow_player=obj.name in ['scheleton', 'dragon', 'bat_1', 'flame_1'])
-                    self.monster.player = self.player
+        # Handle all enemies including fish
+        for obj in self.current_map.get_layer_by_name('areas'):
+            if obj.name in self.enemies_list:
+                # Special handling for fish - pick random spawn point
+                if obj.name == 'fish':
+                    fish_areas = [o for o in self.current_map.get_layer_by_name('areas') if o.name == 'fish']
+                    spawn_area = random.choice(fish_areas)
+                    spawn_pos = (spawn_area.x, spawn_area.y)
+                else:
+                    spawn_pos = (obj.x, obj.y)
 
+                self.monster = NPC(spawn_pos, self.enemies_images[obj.name],
+                                   self.all_sprites, obj.name, enemies_speed[obj.name],
+                                   True, self.enemies_life[obj.name], self.enemies_direction[obj.name],
+                                   follow_player=obj.name in ['scheleton', 'dragon', 'bat_1', 'flame_1'])
+                self.monster.player = self.player
+                
     def enter_area_check(self,event):
         for name, area in self.area_group.items():
         ###check if the player pressed yes key to enter the area
@@ -175,7 +175,8 @@ class Game:
                     Rune(position, self.all_sprites)
                 if self.temporary_action == 'crystal ball':
                     for enemy in enemies:
-                        enemy.speed = 0
+                        if enemy.name != 'dragon':
+                            enemy.speed = 0
 
     def player_fire(self,event):
         if self.key_down(event,'z') and self.player.inventory['fire dust'] > 0:
@@ -288,23 +289,28 @@ class Game:
 
             # Menu text
             title = font.render("GAME MENU", True, "white")
-            inventory_text = font.render(f"Inventory: {self.player.inventory}", True, "white")
-            health_text = font.render(f"Health: {self.player.life}", True, "white")
-            area_text = font.render(f"Current Area: {self.current_area}", True, "white")
+            instructions_text = font.render(f"{self.instructions}", True, "white")
+            trade_text = font.render(f"{self.trade}", True, "white")
+            items_text = font.render(f"{self.items}", True, "white")
             controls = font.render("ESC - Resume | Q - Quit", True, "white")
 
             # Center the text
             title_rect = title.get_rect(center=(WINDOW_WIDTH // 2, 100))
-            inventory_rect = inventory_text.get_rect(center=(WINDOW_WIDTH // 2, 200))
-            health_rect = health_text.get_rect(center=(WINDOW_WIDTH // 2, 250))
-            area_rect = area_text.get_rect(center=(WINDOW_WIDTH // 2, 300))
-            controls_rect = controls.get_rect(center=(WINDOW_WIDTH // 2, 400))
+            instructions_rect = instructions_text.get_rect(center=(WINDOW_WIDTH // 2, 200))
+            trade_rect = trade_text.get_rect(center=(WINDOW_WIDTH // 2, 300))
+            items_rect = items_text.get_rect(center=(WINDOW_WIDTH // 2, 400))
+            controls_rect = controls.get_rect(center=(WINDOW_WIDTH // 2, 500))
 
-            self.display_surface.blit(title, title_rect)
-            self.display_surface.blit(inventory_text, inventory_rect)
-            self.display_surface.blit(health_text, health_rect)
-            self.display_surface.blit(area_text, area_rect)
-            self.display_surface.blit(controls, controls_rect)
+            menu_dict = {
+                title: title_rect,
+                instructions_text: instructions_rect,
+                trade_text: trade_rect,
+                items_text: items_rect,
+                controls: controls_rect
+            }
+
+            for key,value in menu_dict.items():
+                self.display_surface.blit(key, value)
 
             pygame.display.update()
 

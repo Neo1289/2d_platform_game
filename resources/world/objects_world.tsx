@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.10" tiledversion="1.11.2" name="objects" tilewidth="406" tileheight="475" tilecount="30" columns="0">
+<tileset version="1.10" tiledversion="1.11.2" name="objects" tilewidth="112" tileheight="141" tilecount="31" columns="0">
  <grid orientation="orthogonal" width="1" height="1"/>
  <tile id="0">
   <image source="bush.png" width="47" height="43"/>
@@ -89,6 +89,9 @@
   <image source="runes floor.png" width="19" height="46"/>
  </tile>
  <tile id="29">
-  <image source="castle.png" width="406" height="475"/>
+  <image source="castle.png" width="13" height="15"/>
+ </tile>
+ <tile id="30">
+  <image source="broken runes.png" width="30" height="40"/>
  </tile>
 </tileset>

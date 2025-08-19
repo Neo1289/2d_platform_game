@@ -27,7 +27,7 @@ class GeneralSprite(pygame.sprite.Sprite):
     def __init__(self, pos, surf, groups, ground_att: bool, name: str= None, resources: int= 0, item: bool= None):
          super().__init__(groups)
 
-         self.resources = 10 if name == 'spawning chest' else resources
+         self.resources = 10 if name == 'magic stone' else resources
          if ground_att: self.ground = True
          self.image = surf
          self.rect = self.image.get_rect(topleft = pos)
@@ -38,7 +38,7 @@ class GeneralSprite(pygame.sprite.Sprite):
               if self.name in ('merchant'): self.human = True
               if self.name == 'runes' : self.rune = True
          if name:
-              if self.name == 'spawning chest': ###add the names of all the objects that have to move
+              if self.name == 'magic stone': ###add the names of all the objects that have to move
                     self.temp = True
                     self.spawn_timer = 0
                     self.spawn_cooldown = 3
