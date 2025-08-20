@@ -60,6 +60,7 @@ for file_name in listdir(flame_folder):
     surf = pygame.image.load(full_path).convert()
     surf.set_colorkey((10,5,46))
     flame.append(surf)
+
 # ---------------------------
 # ice images
 # ---------------------------
@@ -95,14 +96,27 @@ for file_name in listdir(fish_folder):
     fish.append(surf)
 
 # ---------------------------
+# infernal fire images
+# ---------------------------
+
+infernal = []
+infernal_folder = path.join('resources', 'fire_attack')
+for file_name in listdir(infernal_folder):
+    full_path = path.join(infernal_folder, file_name)
+    surf = pygame.image.load(full_path).convert_alpha()
+    surf.set_colorkey((31, 16, 42))
+    infernal.append(surf)
+
+
+# ---------------------------
 # enemies dictionary images
 # ---------------------------
 enemies_life = {"dragon":500,"scheleton": 10,"bat":10,"ice":1000,"flame":100000,"bat_1":10,"fish":10,"flame_1":100,"infernal_fire":10000}
-enemies_images = {"dragon":dragon,"bat":bat,"scheleton":scheleton,"flame":flame,"ice":ice,"bat_1":bat,"fish":fish,"flame_1":flame,"infernal_fire":flame}
-enemies_speed = {"dragon":110,"bat":80,"scheleton":30,"flame":0,"ice":100,"bat_1":80,"fish":5,"flame_1":7,"infernal_fire":50}
+enemies_images = {"dragon":dragon,"bat":bat,"scheleton":scheleton,"flame":flame,"ice":ice,"bat_1":bat,"fish":fish,"flame_1":flame,"infernal_fire":infernal}
+enemies_speed = {"dragon":110,"bat":80,"scheleton":30,"flame":0,"ice":100,"bat_1":80,"fish":5,"flame_1":7,"infernal_fire":300}
 enemies_direction = {"dragon": [-1,1] ,"bat":[-1,1] ,"scheleton":[-1,1] ,"flame":[-1,1],"ice":[-1,1],"bat_1":[-1,1],"fish":[-1,1],"flame_1":[-1,1],"infernal_fire":[0,1]}
-spawning_time =  {'world':20000,'house':0,'forest':0,'cemetery':5000,
-                  'dungeon' : 100000000, 'maze' : 2500, 'abandoned house': 5000,'river':2000}
+spawning_time =  {'world':5000,'house':0,'forest':0,'cemetery':5000,
+                  'dungeon' : 100000000, 'maze' : 2500, 'abandoned house': 5000,'river':2000,'forbidden forest': 100}
 
 lasting_time = {'Rune': 1000, 'scheleton': 30000, 'flame': 300000000,'dragon': 3000000,'ice': 5000,'bat_1': 50000,'bat': 10000,'fire':1000,'fish':1000,"flame_1":100000,"infernal_fire": 1000}
 

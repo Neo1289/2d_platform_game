@@ -34,7 +34,7 @@ class Player(pygame.sprite.Sprite):
             'potion': 1,
             'crystal ball': 1,
             'coin': 1,
-            'keys': 0,
+            'keys': 5,
             'holy water': 1,
             'runes dust': 1,
             'nothing useful': 0,
