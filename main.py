@@ -85,6 +85,13 @@ class Game:
         # Handle all enemies including fish
         for obj in self.current_map.get_layer_by_name('areas'):
             if obj.name in self.enemies_list:
+                # Check if dragon already exists - only allow one dragon
+                if obj.name == 'dragon':
+                    existing_dragons = [sprite for sprite in self.all_sprites if
+                                        isinstance(sprite, NPC) and sprite.name == 'dragon']
+                    if existing_dragons:
+                        continue  # Skip creating another dragon
+
                 # Special handling for fish - pick random spawn point
                 if obj.name == 'fish':
                     fish_areas = [o for o in self.current_map.get_layer_by_name('areas') if o.name == 'fish']
@@ -180,7 +187,7 @@ class Game:
 
     def player_fire(self,event):
         if self.key_down(event,'z') and self.player.inventory['fire dust'] > 0:
-            Fire(self.player.rect.center,player_flame_frames,self.all_sprites,30,self.player.state)
+            Fire(self.player.rect.center,player_flame_frames,self.all_sprites,50,self.player.state)
             self.player.inventory['fire dust'] -= 1
 
     def trading(self,event):
@@ -226,7 +233,7 @@ class Game:
                     self.player.inventory['keys'] += 2
                     self.player.inventory['crystal ball'] += 2
 
-        for sprite in self.all_sprites: #controlling fished population
+        for sprite in self.all_sprites: #controlling fishes population
             if isinstance(sprite, NPC) and sprite.name == 'fish':
                 self.fishes += 1
             if self.fishes > 1:
@@ -234,6 +241,8 @@ class Game:
 
     def display_captions(self):
         time_sec = pygame.time.get_ticks() // 1000
+        enemies = self.enemies_groups()
+
         self.caption = (f"\u2665 {self.player.life}     "
                         f"\U0001F9EA {self.player.inventory['potion']}     "
                         f"\U0001F52E {self.player.inventory['crystal ball']}     "
@@ -244,6 +253,7 @@ class Game:
                         f"\U0001F525{self.player.inventory['fire dust']}     "
                         f"timer: {time_sec}          "
                         f"last item found: {self.last_item}     "
+                        f"special enemy life: {[i.life for i in enemies if i.name in ('dragon','fish')]}"
                         )
         pygame.display.set_caption(self.caption)
 
@@ -269,7 +279,7 @@ class Game:
         return [sprite for sprite in self.all_sprites if isinstance(sprite, NPC)]
 
     def preventing_repetition(self):
-        return  self.time_event % 10 == 0 and self.time_event != self.last_time_guard
+        return  self.time_event % 5 == 0 and self.time_event != self.last_time_guard
 
     def main_menu(self):
         menu_running = True
