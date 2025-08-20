@@ -110,7 +110,12 @@ class Game:
         for name, area in self.area_group.items():
         ###check if the player pressed yes key to enter the area
             if area.rect.colliderect(self.player.rect) and self.key_down(event,"y"):
-                self.transition_bool = True
+                if name != 'forbidden forest':
+                    self.transition_bool = True
+                elif name == 'forbidden forest' and self.player.inventory['keys'] > 4:
+                    self.player.inventory['keys'] -= 5
+                    self.transition_bool = True
+
         ###perform the actual transition between areas
         if self.transition_bool:
             self.mapping()

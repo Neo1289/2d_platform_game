@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="64" height="64" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="544">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="64" height="64" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="549">
  <tileset firstgid="1" name="ground" tilewidth="32" tileheight="32" tilecount="64" columns="8">
   <image source="TX Tileset Grass.png" width="256" height="256"/>
  </tileset>
@@ -556,5 +556,14 @@
    <point/>
   </object>
   <object id="534" name="river" x="562" y="1161" width="22" height="24"/>
+  <object id="544" name="infernal_fire" x="496.667" y="578.667">
+   <point/>
+  </object>
+  <object id="545" name="infernal_fire" x="502.667" y="468.667">
+   <point/>
+  </object>
+  <object id="548" name="bat_1" x="1334" y="690">
+   <point/>
+  </object>
  </objectgroup>
 </map>
