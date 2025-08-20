@@ -20,14 +20,14 @@ class ShootFire:
         current_time = pygame.time.get_ticks()
         if current_time - self.last_shot >= self.shoot_interval:
             fire_pos = (npc_rect.centerx + npc_rect.width // 2, npc_rect.centery)
-            Fire(fire_pos, self.fire_frames, self.all_sprites, 90, 'right', 'fire')
+            Fire(fire_pos, self.fire_frames, self.all_sprites, 150, 'right', 'fire')
             self.last_shot = current_time
 
 class GeneralSprite(pygame.sprite.Sprite):
     def __init__(self, pos, surf, groups, ground_att: bool, name: str= None, resources: int= 0, item: bool= None):
          super().__init__(groups)
 
-         self.resources = 10 if name == 'magic stone' else resources
+         self.resources = 3 if name == 'magic stone' else resources
          if ground_att: self.ground = True
          self.image = surf
          self.rect = self.image.get_rect(topleft = pos)
@@ -37,23 +37,6 @@ class GeneralSprite(pygame.sprite.Sprite):
               self.name = name
               if self.name in ('merchant'): self.human = True
               if self.name == 'runes' : self.rune = True
-         if name:
-              if self.name == 'magic stone': ###add the names of all the objects that have to move
-                    self.temp = True
-                    self.spawn_timer = 0
-                    self.spawn_cooldown = 3
-
-    def update(self,dt):
-        try:
-            if self.temp:
-                self.spawn_timer += dt
-                if self.spawn_timer >= self.spawn_cooldown:
-                    new_x = random.randint(600, 800)
-                    new_y = random.randint(700, 1000)
-                    self.rect.center = (new_x, new_y)
-                    self.spawn_timer = 0
-        except:
-            pass
 
 #######################
 class AreaSprite(pygame.sprite.Sprite):
