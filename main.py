@@ -284,7 +284,7 @@ class Game:
         return [sprite for sprite in self.all_sprites if isinstance(sprite, NPC)]
 
     def preventing_repetition(self):
-        return  self.time_event % 5 == 0 and self.time_event != self.last_time_guard
+        return  self.time_event % 2 == 0 and self.time_event != self.last_time_guard
 
     def main_menu(self):
         menu_running = True

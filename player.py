@@ -34,11 +34,11 @@ class Player(pygame.sprite.Sprite):
             'potion': 1,
             'crystal ball': 1,
             'coin': 1,
-            'keys': 5,
+            'keys': 0,
             'holy water': 1,
             'runes dust': 1,
             'nothing useful': 0,
-            'fire dust': 5
+            'fire dust': 1
         }
 
     def _setup_rects(self, pos):

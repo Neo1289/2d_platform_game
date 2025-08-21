@@ -556,10 +556,7 @@
    <point/>
   </object>
   <object id="534" name="river" x="562" y="1161" width="22" height="24"/>
-  <object id="544" name="infernal_fire" x="496.667" y="578.667">
-   <point/>
-  </object>
-  <object id="545" name="infernal_fire" x="502.667" y="468.667">
+  <object id="544" name="infernal_fire" x="568" y="530">
    <point/>
   </object>
   <object id="548" name="bat_1" x="1334" y="690">
