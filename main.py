@@ -110,7 +110,7 @@ class Game:
         for name, area in self.area_group.items():
         ###check if the player pressed yes key to enter the area
             if area.rect.colliderect(self.player.rect) and self.key_down(event,"y"):
-                if name != 'forbidden forest':
+                if name not in ('forbidden forest','exit'):
                     self.transition_bool = True
                 elif name == 'forbidden forest' and self.player.inventory['keys'] > 4:
                     self.player.inventory['keys'] -= 5
@@ -218,6 +218,14 @@ class Game:
             pygame.time.delay(5000)
             pygame.quit()
             sys.exit()
+
+    def end_game(self,event):
+        for name, area in self.area_group.items():
+            if area.rect.colliderect(self.player.rect) and self.key_down(event, "y") and name == 'exit':
+                self.caption = pygame.display.set_caption('YOU WIN, YOU ESCAPED')
+                pygame.time.delay(5000)
+                pygame.quit()
+                sys.exit()
 
     def check_enemies_collision(self):
         enemies = self.enemies_groups()
@@ -343,6 +351,7 @@ class Game:
                 self.trading(event)
                 self.reset_timer(event)
                 self.player_fire(event)
+                self.end_game(event)
                 if event.type == self.custom_event:
                     self.monsters()
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_m:
